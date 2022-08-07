@@ -341,11 +341,67 @@ let designMove3 = (move3Data) => {
 let designMove4 = (move4Data) => {
     const btn4 = document.getElementById("move4");
     const themeColor4 = typeColor[move4Data.type.name];
-    let leftpp4 = move4Data.pp; 
+    let leftpp = move4Data.pp; 
     btn4.innerHTML = `
     <p>${move4Data.name}</p>
     <small>${move4Data.type.name}</small>
-    <small class="pp">pp ${leftpp4}/${move4Data.pp}</small>
+    <small class="pp">pp ${leftpp}/${move4Data.pp}</small>
+    `;
+
+    btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
+    btn4.style.borderColor = `${themeColor4}`;
+};
+
+let reDesignMove1 = (move1Data) => {
+    const btn1 = document.getElementById("move1");
+    const themeColor1 = typeColor[move1Data.type]; 
+    let leftpp1 = move1Data.pp;
+    btn1.innerHTML = `
+    <p>${move1Data.name}</p>
+    <small>${move1Data.type}</small>
+    <small class="pp">pp ${leftpp1}/${move1Data.pp}</small>
+    `;
+
+    btn1.style.background = `linear-gradient(to top, ${themeColor1}, white)`;
+    btn1.style.borderColor = `${themeColor1}`;
+};
+
+let reDesignMove2 = (move2Data) => {
+    const btn2 = document.getElementById("move2");
+    const themeColor2 = typeColor[move2Data.type]; 
+    let leftpp2 = move2Data.pp;
+    btn2.innerHTML = `
+    <p>${move2Data.name}</p>
+    <small>${move2Data.type}</small>
+    <small class="pp">pp ${leftpp2}/${move2Data.pp}</small>
+    `;
+
+    btn2.style.background = `linear-gradient(to top, ${themeColor2}, white)`;
+    btn2.style.borderColor = `${themeColor2}`;
+};
+
+let reDesignMove3 = (move3Data) => {
+    const btn3 = document.getElementById("move3");
+    const themeColor3 = typeColor[move3Data.type]; 
+    let leftpp3 = move3Data.pp;
+    btn3.innerHTML = `
+    <p>${move3Data.name}</p>
+    <small>${move3Data.type}</small>
+    <small class="pp">pp ${leftpp3}/${move3Data.pp}</small>
+    `;
+
+    btn3.style.background = `linear-gradient(to top, ${themeColor3}, white)`;
+    btn3.style.borderColor = `${themeColor3}`;
+};
+
+let reDesignMove4 = (move4Data) => {
+    const btn4 = document.getElementById("move4");
+    const themeColor4 = typeColor[move4Data.type];
+    let leftpp = move4Data.pp; 
+    btn4.innerHTML = `
+    <p>${move4Data.name}</p>
+    <small>${move4Data.type}</small>
+    <small class="pp">pp ${leftpp}/${move4Data.pp}</small>
     `;
 
     btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
@@ -401,18 +457,71 @@ let addEventListen = () =>{
     moveBtn4.addEventListener("click", function () { Attack(4);});
 };
 
+let blockActionField = () =>{
+    const actionField = document.getElementById("actionField");
+    actionField.innerHTML=`
+    <p>Waiting for next turn...</p>
+    `;
+};
+
+let unblockActionField = (pokeData) =>{
+    const actionField = document.getElementById("actionField");
+    actionField.innerHTML=`
+    <div class="action-msg">
+        <span>What will <b>${pokeData.pokeName}</b> do?</span>
+        <div class="hpBox">
+            HP ${pokeData.health}/${pokeData.Final_HP}
+        </div>
+    </div>
+    <div class="Attack-box">
+        <div class="attack-text">Attack</div>
+        <div class="attack-menu">
+            <div class="move-list">
+                <button class="move" id="move1">
+                   
+                </button>
+                <button class="move" id="move2">
+                    <p>Name</p>
+                    <small>type</small>
+                    <small class="pp">pp 10/10</small>
+                </button>
+                <button class="move" id="move3">
+                    <p>Name</p>
+                    <small>type</small>
+                    <small class="pp">pp 10/10</small>
+                </button>
+                <button class="move" id="move4">
+                    <p>Name</p>
+                    <small>type</small>
+                    <small class="pp">pp 10/10</small>
+                </button>
+            </div>
+        </div>
+    </div>
+    `;
+    reDesignMove1(move1);
+    reDesignMove2(move2);
+    reDesignMove3(move3);
+    reDesignMove4(move4);
+    addEventListen();
+};
+
 let Attack = (n) => {
     if (n==1)
     {
+        blockActionField();
         console.log(move1);
     }
     else if (n==2) {
+        blockActionField();
         console.log(move2);
     } 
     else if (n==3) {
+        blockActionField();
         console.log(move3);
     }
     else if (n==4) {
+        blockActionField();
         console.log(move4);
     }
 };
