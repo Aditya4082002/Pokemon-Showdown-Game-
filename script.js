@@ -140,9 +140,30 @@ let goPokemonPc = (data1) =>{
     const pcFinal_SpecialDefence = (Math.floor(0.01 * (2 * pcBase_SpecialDefence + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
     const pcability = data1.abilities[0].ability.name;
 
+    let pcPokeData ={
+        pcLevel : pcLevel,
+        pcIV : pcIV,
+        pcPokeName : pcPokeName,
+        pcBase_hp : pcBase_hp,
+        pcFinal_HP : pcFinal_HP,
+        pchealth : pchealth,
+        pchealthPerc : pchealthPerc,
+        pcBase_Attack : pcBase_Attack,
+        pcFinal_Attack : pcFinal_Attack,
+        pcBase_Defence : pcBase_Defence,
+        pcFinal_Defence : pcFinal_Defence,
+        pcBase_Speed : pcBase_Speed,
+        pcFinal_Speed : pcFinal_Speed,
+        pcBase_SpecialAttack : pcBase_SpecialAttack,
+        pcFinal_SpecialAttack : pcFinal_SpecialAttack,
+        pcBase_SpecialDefence : pcBase_SpecialDefence,
+        pcFinal_SpecialDefence : pcFinal_SpecialDefence,
+        pcability : pcability
+    }
+
     pcPoke.innerHTML=`
-    <p class="pokeName">${pcPokeName} - L${pcLevel}</p>
-    <div class ="health"><span>${pchealthPerc}%</span><progress id="health" value="${pchealth}" max="${pcFinal_HP}"></progress></div>
+    <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
+    <div class ="health"><span>${pchealthPerc}%</span><progress id="health" value="${pcPokeData.pchealth}" max="${pcPokeData.pcFinal_HP}"></progress></div>
     <img src="${pcImgSrc}" style="height: 180px; width: 180px;">
     `;
 }
