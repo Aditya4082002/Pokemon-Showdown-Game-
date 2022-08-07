@@ -100,7 +100,9 @@ strong{
 }
 
 .battleRecord{
+    box-sizing: border-box;
     background-color: rgb(216, 215, 215);
+    border: 5px solid grey;
     height: 580px;
     width: 886px;
 }
