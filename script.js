@@ -19,13 +19,21 @@ const typeColor = {
     steel: "#a69e94"
 };
 
+let actionField ;
+
+let turn_counter = 1;
+
 let pokeData = {};
+let pokeHealth ;
+let pokeHealthPerc = 100;
 let move1 = {};
 let move2 = {};
 let move3 = {};
 let move4 = {};
 
 let pcPokeData ={};
+let pcPokeHealth ;
+let pcPokeHealthPerc = 100;
 let pcMove1 = {};
 let pcMove2 = {};
 let pcMove3 = {};
@@ -47,7 +55,6 @@ let startGame = () => {
 btn.addEventListener("click", startGame);
 
 let GenerateBattleField = () =>{
-    let turn_counter = 1;
     screen.innerHTML = `
     <div>
     <div class="battleField">
@@ -78,6 +85,14 @@ let GenerateBattleField = () =>{
     <div class="battleRecord">
 
     </div>
+    `;
+    
+};
+
+let updateTurn = () =>{
+    const turn_count = document.getElementById("turn-counter");
+    turn_count.innerHTML = `
+    Turn ${turn_counter}
     `;
 };
 
@@ -124,11 +139,14 @@ let goPokemonPlayer = (data) =>{
     playerPoke.innerHTML=`
     <p class="pokeName">${pokeData.pokeName} - L${pokeData.Level}</p>
     <div class ="health">
-        <progress id="health" value="${pokeData.health}" max="${pokeData.Final_HP}"></progress>
-        <span>${pokeData.healthPerc}%</span>
+        <progress id="health1" value="100" max="100"></progress>
+        <span id="health1perc">100%</span>
     </div>
     <img src="${imgSrc}" style="height: 180px; width: 180px;">
     `;
+
+    pokeHealth = document.getElementById("health1");
+    pokeHealthPerc =document.getElementById("health1perc");
 
     GenerateActionField(pokeData);
     moveSelector(data);
@@ -177,9 +195,10 @@ let goPokemonPc = (data1) =>{
 
     pcPoke.innerHTML=`
     <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
-    <div class ="health"><span>${pchealthPerc}%</span><progress id="health" value="${pcPokeData.pchealth}" max="${pcPokeData.pcFinal_HP}"></progress></div>
+    <div class ="health"><span id="healthperc">${pcPokeHealthPerc}%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
     <img src="${pcImgSrc}" style="height: 180px; width: 180px;">
     `;
+    pcPokeHealth = document.getElementById("health");
 
     pcMoveSelector(data1);
 };
@@ -203,6 +222,7 @@ let moveSelector = (data) => {
         move1.power = Data.power;
         move1.pp = Data.pp;
         move1.accuracy = Data.accuracy;
+        move1.class = Data.damage_class.name;
         designMove1(Data);
         });
         
@@ -214,6 +234,7 @@ let moveSelector = (data) => {
         move2.power = Data.power;
         move2.pp = Data.pp;
         move2.accuracy = Data.accuracy;
+        move2.class = Data.damage_class.name;
         designMove2(Data);
         });
         
@@ -225,6 +246,7 @@ let moveSelector = (data) => {
         move3.power = Data.power;
         move3.pp = Data.pp;
         move3.accuracy = Data.accuracy;
+        move3.class = Data.damage_class.name;
         designMove3(Data);
         });
         
@@ -236,6 +258,7 @@ let moveSelector = (data) => {
         move4.power = Data.power;
         move4.pp = Data.pp;
         move4.accuracy = Data.accuracy;
+        move4.class = Data.damage_class.name;
         designMove4(Data);
         });
 };
@@ -259,6 +282,7 @@ let pcMoveSelector = (data) => {
         pcMove1.power = Data.power;
         pcMove1.pp = Data.pp;
         pcMove1.accuracy = Data.accuracy;
+        pcMove1.class = Data.damage_class.name;
         console.log(pcMove1);
         });
         
@@ -270,6 +294,7 @@ let pcMoveSelector = (data) => {
         pcMove2.power = Data.power;
         pcMove2.pp = Data.pp;
         pcMove2.accuracy = Data.accuracy;
+        pcMove2.class = Data.damage_class.name;
         console.log(pcMove2);
         });
         
@@ -281,6 +306,7 @@ let pcMoveSelector = (data) => {
         pcMove3.power = Data.power;
         pcMove3.pp = Data.pp;
         pcMove3.accuracy = Data.accuracy;
+        pcMove3.class = Data.damage_class.name;
         console.log(pcMove3);
         });
         
@@ -292,6 +318,7 @@ let pcMoveSelector = (data) => {
         pcMove4.power = Data.power;
         pcMove4.pp = Data.pp;
         pcMove4.accuracy = Data.accuracy;
+        pcMove4.class = Data.damage_class.name;
         console.log(pcMove4);
         });
 };
@@ -409,7 +436,7 @@ let reDesignMove4 = (move4Data) => {
 };
 
 let GenerateActionField = (pokeData) =>{
-    const actionField = document.getElementById("actionField");
+    actionField = document.getElementById("actionField");
     actionField.innerHTML=`
     <div class="action-msg">
         <span>What will <b>${pokeData.pokeName}</b> do?</span>
@@ -458,14 +485,12 @@ let addEventListen = () =>{
 };
 
 let blockActionField = () =>{
-    const actionField = document.getElementById("actionField");
     actionField.innerHTML=`
     <p>Waiting for next turn...</p>
     `;
 };
 
 let unblockActionField = (pokeData) =>{
-    const actionField = document.getElementById("actionField");
     actionField.innerHTML=`
     <div class="action-msg">
         <span>What will <b>${pokeData.pokeName}</b> do?</span>
@@ -506,30 +531,122 @@ let unblockActionField = (pokeData) =>{
     addEventListen();
 };
 
+let declareWinner = (Name) =>{
+    actionField.innerHTML = `
+    <strong>${Name} WIN</strong>
+    `;
+    throw 'Game End';
+}
+
+let winnerCheck = () =>{
+    if (pcPokeHealth.value == 0)
+    {
+        declareWinner("YOU");
+    }
+    if (pokeHealth.value == 0)
+    {
+        declareWinner("PC");
+    }
+};
+
+let Turn = (playerMove, pcMove) =>{
+    winnerCheck();
+    let plyAtt ;
+    let plyDef ;
+    let pcAtt ;
+    let pcDef ;
+    if (playerMove.power == null)
+    {
+        playerMove.power = (Math.floor(Math.random() * 20) + 1) * 5;
+    }
+    if (pcMove.power == null)
+    {
+        pcMove.power = (Math.floor(Math.random() * 20) + 1) * 5;
+    }
+
+    if (playerMove.damage_class == "special")
+    {
+        plyAtt = pokeData.Final_SpecialAttack;
+        pcDef = pcPokeData.pcFinal_SpecialDefence;
+    }
+    else
+    {
+        plyAtt = pokeData.Final_Attack;
+        pcDef = pcPokeData.pcFinal_Defence;
+    }
+
+    if (pcMove.damage_class == "special")
+    {
+        pcAtt = pcPokeData.pcFinal_SpecialAttack;
+        plyDef = pokeData.Final_SpecialDefence;
+    }
+    else
+    {
+        pcAtt = pcPokeData.pcFinal_Attack;
+        plyDef = pokeData.Final_Defence;
+    }
+
+    let damage = ((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2);
+    let pcDamage = ((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2);
+
+    let damageperc ;
+    let pcDamageperc ;
+
+    pcPokeHealth.value -= (damage/pcPokeData.pcFinal_HP)*100;
+    console.log(pcPokeHealth.value);
+    winnerCheck();
+    pokeHealth.value -= (pcDamage/pokeData.Final_HP)*100;
+    console.log(pokeHealth.value);
+    winnerCheck();
+    console.log(damage,(damage/pcPokeData.pcFinal_HP)*100);
+    unblockActionField(pokeData);
+    turn_counter++;
+    updateTurn();
+};
+
 let Attack = (n) => {
+    let m = Math.floor(Math.random() * 4) + 1;
+    let randomPcMove;
+    if (m==1)
+    {
+        randomPcMove = pcMove1;
+    }
+    else if(m==2)
+    {
+        randomPcMove = pcMove2;
+    }
+    else if(m==3)
+    {
+        randomPcMove = pcMove3;
+    }
+    else if(m==4)
+    {
+        randomPcMove = pcMove4;
+    }
+
     if (n==1)
     {
         blockActionField();
-        console.log(move1);
+        Turn(move1, randomPcMove);
     }
     else if (n==2) {
         blockActionField();
-        console.log(move2);
+        Turn(move2, randomPcMove);
     } 
     else if (n==3) {
         blockActionField();
-        console.log(move3);
+        Turn(move3, randomPcMove);
     }
     else if (n==4) {
         blockActionField();
-        console.log(move4);
+        Turn(move4, randomPcMove);
     }
 };
 
 let loadPokemons = () =>{
     const url = "https://pokeapi.co/api/v2/pokemon/";
 
-    let id = Math.floor(Math.random() * 904) + 1;
+    let id = Math.floor(Math.random() * 905) + 1;
     const finalUrl = url + id;
     fetch(finalUrl)
     .then((Response) => Response.json())
@@ -537,7 +654,7 @@ let loadPokemons = () =>{
         goPokemonPlayer(data);
     });
 
-    let idPc = Math.floor(Math.random() * 904) + 1;
+    let idPc = Math.floor(Math.random() * 905) + 1;
     const finalUrlPc = url + idPc;
     fetch(finalUrlPc)
     .then((Response) => Response.json())
@@ -545,6 +662,3 @@ let loadPokemons = () =>{
         goPokemonPc(data1);
     });
 };
-
-// let health = document.getElementById("health")
-// health.value -= 10; //Or whatever you want to do with it.
