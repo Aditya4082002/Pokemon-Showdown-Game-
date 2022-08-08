@@ -67,6 +67,19 @@ strong{
     border: 2px solid white;
     border-radius: 15px;
     height: 10px;
+    margin-top: 4px;
+}
+
+#health1{
+    border: 2px solid white;
+    border-radius: 15px;
+    height: 10px;
+    margin-top: 4px;
+}
+
+.health{
+    display: flex;
+    color: rgb(216, 212, 212);
 }
 
 #screen{
@@ -163,15 +176,6 @@ strong{
     color: black;
     -webkit-text-stroke: 0.8px #ffffff;
     text-align: center;
-}
-
-#health{
-    margin-top: 4px;
-}
-
-.health{
-    display: flex;
-    color: rgb(216, 212, 212);
 }
 
 .hpBox{
