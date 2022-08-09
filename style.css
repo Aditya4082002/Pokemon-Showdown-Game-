@@ -7,6 +7,7 @@
 
 body{
     height: 100vh;
+    background-color: rgb(127, 10, 196);
     background-image: url(images/background.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -122,11 +123,14 @@ progress::-webkit-progress-bar {
 }
 
 .battleRecord{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
     background-color: rgb(216, 215, 215);
     border: 5px solid grey;
     height: 580px;
     width: 886px;
+    padding: 3px;
+    overflow-y: auto;
 }
 
 .player1Box{
@@ -222,6 +226,15 @@ progress::-webkit-progress-bar {
 
 .pp{
     margin-left: 75px;
+}
+
+.turn-record{
+    margin-top: 3px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    font-weight: bolder;
+    width: 100%;
+    border: 3px solid grey;
 }
 
 .turn-counter{
