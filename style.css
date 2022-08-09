@@ -70,8 +70,17 @@ strong{
     margin-top: 4px;
 }
 
+progress::-webkit-progress-value {
+    background: rgb(37, 214, 37);
+}
+
+progress::-webkit-progress-bar {
+    background-color: rgb(226, 226, 217);
+}
+
 #health1{
     border: 2px solid white;
+    background: yellow;
     border-radius: 15px;
     height: 10px;
     margin-top: 4px;
