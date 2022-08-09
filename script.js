@@ -20,6 +20,7 @@ const typeColor = {
 };
 
 let actionField ;
+let battleLog ;
 
 let turn_counter = 1;
 
@@ -84,11 +85,10 @@ let GenerateBattleField = () =>{
 
         </div>
     </div>
-    <div class="battleRecord">
-
+    <div class="battleRecord" id="battleRecord">
     </div>
     `;
-    
+    battleLog = document.getElementById("battleRecord");
 };
 
 let updateTurn = () =>{
@@ -494,6 +494,12 @@ let blockActionField = () =>{
     `;
 };
 
+let updateBattlelog = () =>{
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div class="turn-record">Turn ${turn_counter}</div>
+    `;
+};
+
 let unblockActionField = (pokeData) =>{
     actionField.innerHTML=`
     <div class="action-msg">
@@ -535,21 +541,24 @@ let unblockActionField = (pokeData) =>{
     addEventListen();
 };
 
-let declareWinner = (Name) =>{
+let declareWinner = (Name,pokename) =>{
     actionField.innerHTML = `
-    <strong>${Name} Won The Battle</strong>
+    <center><strong>${Name} Won The Battle</strong></center>
+    `;
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div>${pokename} Fainted!</div>
     `;
     throw 'Game End';
-}
+};
 
 let winnerCheck = () =>{
     if (pcPokeHealth.value == 0)
     {
-        declareWinner("TLE_Pheonix");
+        declareWinner("TLE_Pheonix",pcPokeData.pcPokeName);
     }
     if (pokeHealth.value == 0)
     {
-        declareWinner("PC");
+        declareWinner("PC",pokeData.pokeName);
     }
 };
 
@@ -597,10 +606,15 @@ let Turn = (playerMove, pcMove) =>{
     damageperc = Math.floor((damage/pcPokeData.pcFinal_HP)*100);
     let pcDamageperc ;
     pcDamageperc = Math.floor((pcDamage/pokeData.Final_HP)*100);
-
+    
+    updateBattlelog();
     pcPokeHealth.value -= damageperc;
     pcPokeHealthPerc.innerHTML = `
     ${pcPokeHealth.value}%
+    `;
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
     `;
 
     winnerCheck();
@@ -608,12 +622,19 @@ let Turn = (playerMove, pcMove) =>{
     pokeHealthPerc.innerHTML = `
     ${pokeHealth.value}%
     `;
+
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+    `;
+
     pokeData.health -= pcDamage;
     hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
     winnerCheck();
     unblockActionField(pokeData);
     turn_counter++;
     updateTurn();
+
 };
 
 let Attack = (n) => {
