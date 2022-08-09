@@ -23,9 +23,11 @@ let actionField ;
 
 let turn_counter = 1;
 
+let hpbox ;
+
 let pokeData = {};
 let pokeHealth ;
-let pokeHealthPerc = 100;
+let pokeHealthPerc ;
 let move1 = {};
 let move2 = {};
 let move3 = {};
@@ -33,7 +35,7 @@ let move4 = {};
 
 let pcPokeData ={};
 let pcPokeHealth ;
-let pcPokeHealthPerc = 100;
+let pcPokeHealthPerc ;
 let pcMove1 = {};
 let pcMove2 = {};
 let pcMove3 = {};
@@ -195,10 +197,11 @@ let goPokemonPc = (data1) =>{
 
     pcPoke.innerHTML=`
     <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
-    <div class ="health"><span id="healthperc">${pcPokeHealthPerc}%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
+    <div class ="health"><span id="healthperc">100%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
     <img src="${pcImgSrc}" style="height: 180px; width: 180px;">
     `;
     pcPokeHealth = document.getElementById("health");
+    pcPokeHealthPerc =document.getElementById("healthperc");
 
     pcMoveSelector(data1);
 };
@@ -440,7 +443,7 @@ let GenerateActionField = (pokeData) =>{
     actionField.innerHTML=`
     <div class="action-msg">
         <span>What will <b>${pokeData.pokeName}</b> do?</span>
-        <div class="hpBox">
+        <div class="hpBox" id="hpBox">
             HP ${pokeData.health}/${pokeData.Final_HP}
         </div>
     </div>
@@ -470,6 +473,7 @@ let GenerateActionField = (pokeData) =>{
         </div>
     </div>
     `;
+    hpbox = document.getElementById("hpBox");
     addEventListen();
 };
 
@@ -533,7 +537,7 @@ let unblockActionField = (pokeData) =>{
 
 let declareWinner = (Name) =>{
     actionField.innerHTML = `
-    <strong>${Name} WIN</strong>
+    <strong>${Name} Won The Battle</strong>
     `;
     throw 'Game End';
 }
@@ -541,7 +545,7 @@ let declareWinner = (Name) =>{
 let winnerCheck = () =>{
     if (pcPokeHealth.value == 0)
     {
-        declareWinner("YOU");
+        declareWinner("TLE_Pheonix");
     }
     if (pokeHealth.value == 0)
     {
@@ -586,19 +590,27 @@ let Turn = (playerMove, pcMove) =>{
         plyDef = pokeData.Final_Defence;
     }
 
-    let damage = ((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2);
-    let pcDamage = ((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2);
+    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2));
+    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2));
 
     let damageperc ;
+    damageperc = Math.floor((damage/pcPokeData.pcFinal_HP)*100);
     let pcDamageperc ;
+    pcDamageperc = Math.floor((pcDamage/pokeData.Final_HP)*100);
 
-    pcPokeHealth.value -= (damage/pcPokeData.pcFinal_HP)*100;
-    console.log(pcPokeHealth.value);
+    pcPokeHealth.value -= damageperc;
+    pcPokeHealthPerc.innerHTML = `
+    ${pcPokeHealth.value}%
+    `;
+
     winnerCheck();
-    pokeHealth.value -= (pcDamage/pokeData.Final_HP)*100;
-    console.log(pokeHealth.value);
+    pokeHealth.value -= pcDamageperc;
+    pokeHealthPerc.innerHTML = `
+    ${pokeHealth.value}%
+    `;
+    pokeData.health -= pcDamage;
+    hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
     winnerCheck();
-    console.log(damage,(damage/pcPokeData.pcFinal_HP)*100);
     unblockActionField(pokeData);
     turn_counter++;
     updateTurn();
