@@ -608,29 +608,56 @@ let Turn = (playerMove, pcMove) =>{
     pcDamageperc = Math.floor((pcDamage/pokeData.Final_HP)*100);
     
     updateBattlelog();
-    pcPokeHealth.value -= damageperc;
-    pcPokeHealthPerc.innerHTML = `
-    ${pcPokeHealth.value}%
-    `;
-    battleLog.innerHTML = battleLog.innerHTML + `
-    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-    `;
 
-    winnerCheck();
-    pokeHealth.value -= pcDamageperc;
-    pokeHealthPerc.innerHTML = `
-    ${pokeHealth.value}%
-    `;
+    if (pcPokeData.pcFinal_Speed > pokeData.Final_Speed)
+    {
+        pokeHealth.value -= pcDamageperc;
+        pokeHealthPerc.innerHTML = `
+        ${pokeHealth.value}%
+        `;
+        battleLog.innerHTML = battleLog.innerHTML + `
+        <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+        <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+        `;
+        pokeData.health -= pcDamage;
+        hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        winnerCheck();
 
-    battleLog.innerHTML = battleLog.innerHTML + `
-    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-    `;
-
-    pokeData.health -= pcDamage;
-    hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
-    winnerCheck();
+        pcPokeHealth.value -= damageperc;
+        pcPokeHealthPerc.innerHTML = `
+        ${pcPokeHealth.value}%
+        `;
+        battleLog.innerHTML = battleLog.innerHTML + `
+        <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+        <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+        `;
+        winnerCheck();
+    }
+    else
+    {
+        pcPokeHealth.value -= damageperc;
+        pcPokeHealthPerc.innerHTML = `
+        ${pcPokeHealth.value}%
+        `;
+        battleLog.innerHTML = battleLog.innerHTML + `
+        <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+        <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+        `;
+        winnerCheck();
+        
+        pokeHealth.value -= pcDamageperc;
+        pokeHealthPerc.innerHTML = `
+        ${pokeHealth.value}%
+        `;
+        battleLog.innerHTML = battleLog.innerHTML + `
+        <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+        <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+        `;
+        pokeData.health -= pcDamage;
+        hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        winnerCheck();
+    }
+    
     unblockActionField(pokeData);
     turn_counter++;
     updateTurn();
