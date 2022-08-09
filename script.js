@@ -570,11 +570,11 @@ let Turn = (playerMove, pcMove) =>{
     let pcDef ;
     if (playerMove.power == null)
     {
-        playerMove.power = (Math.floor(Math.random() * 20) + 1) * 5;
+        playerMove.power = (Math.floor(Math.random() * 10) + 1) * 5;
     }
     if (pcMove.power == null)
     {
-        pcMove.power = (Math.floor(Math.random() * 20) + 1) * 5;
+        pcMove.power = (Math.floor(Math.random() * 10) + 1) * 5;
     }
 
     if (playerMove.damage_class == "special")
@@ -599,8 +599,24 @@ let Turn = (playerMove, pcMove) =>{
         plyDef = pokeData.Final_Defence;
     }
 
-    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2));
-    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2));
+    let critical = 1;
+    let criticalPc = 1;
+    let criticalChance = Math.floor((Math.random() * 100)+1);
+    if (criticalChance >= 0 && criticalChance <=5)
+    {
+        critical = 1.5;
+    }
+    let criticalChancePc = Math.floor((Math.random() * 100)+1);
+    if (criticalChancePc >= 0 && criticalChancePc <=5)
+    {
+        criticalPc = 1.5;
+    }
+
+    let random = (Math.floor((Math.random() * 15) + 85))/100;
+    let randomPc = (Math.floor((Math.random() * 15) + 85))/100;
+
+    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2)*critical*random);
+    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2)*criticalPc*randomPc);
 
     let damageperc ;
     damageperc = Math.floor((damage/pcPokeData.pcFinal_HP)*100);
@@ -615,10 +631,23 @@ let Turn = (playerMove, pcMove) =>{
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
-        battleLog.innerHTML = battleLog.innerHTML + `
-        <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-        <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-        `;
+
+        if (criticalPc == 1.5)
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+            <div>A critical hit!</div
+            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+            `;
+        }
+        else
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+            `;
+        }
+        
         pokeData.health -= pcDamage;
         hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
         winnerCheck();
@@ -627,10 +656,23 @@ let Turn = (playerMove, pcMove) =>{
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
-        battleLog.innerHTML = battleLog.innerHTML + `
-        <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-        <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-        `;
+
+        if (critical == 1.5)
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+            <div>A critical hit!</div>
+            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+            `;
+        }
+        else
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+            `;
+        }
+        
         winnerCheck();
     }
     else
@@ -639,20 +681,46 @@ let Turn = (playerMove, pcMove) =>{
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
-        battleLog.innerHTML = battleLog.innerHTML + `
-        <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-        <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-        `;
+
+        if (critical == 1.5)
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+            <div>A critical hit!</div>
+            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+            `;
+        }
+        else
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+            `;
+        }
+        
         winnerCheck();
         
         pokeHealth.value -= pcDamageperc;
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
-        battleLog.innerHTML = battleLog.innerHTML + `
-        <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-        <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-        `;
+
+        if (criticalPc == 1.5)
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+            <div>A critical hit!</div>
+            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+            `;
+        }
+        else
+        {
+            battleLog.innerHTML = battleLog.innerHTML + `
+            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+            `;
+        }
+        
         pokeData.health -= pcDamage;
         hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
         winnerCheck();
