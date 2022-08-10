@@ -19,6 +19,383 @@ const typeColor = {
     steel: "#a69e94"
 };
 
+const TypeChart = {
+    bug: {
+        bug: 0,
+		dark: 0,
+		dragon: 0,
+		electric: 0,
+		fairy: 0,
+		fighting: 2,
+		fire: 1,
+		flying: 1,
+		ghost: 0,
+		grass: 2,
+		ground: 2,
+		ice: 0,
+		normal: 0,
+		poison: 0,
+		psychic: 0,
+		rock: 1,
+		steel: 0,
+		water: 0,
+    },
+    dark: {
+        prankster: 3,
+		bug: 1,
+		dark: 2,
+		dragon: 0,
+		electric: 0,
+		fairy: 1,
+		fighting: 1,
+		fire: 0,
+		flying: 0,
+		ghost: 2,
+		grass: 0,
+		ground: 0,
+		ice: 0,
+		normal: 0,
+		poison: 0,
+		psychic: 3,
+		rock: 0,
+		steel: 0,
+		water: 0,
+    },
+    dragon: {
+        bug: 0,
+		dark: 0,
+		dragon: 1,
+		electric: 2,
+		fairy: 1,
+		fighting: 0,
+		fire: 2,
+		flying: 0,
+		ghost: 0,
+		grass: 2,
+		ground: 0,
+		ice: 1,
+		normal: 0,
+		poison: 0,
+		psychic: 0,
+		rock: 0,
+		steel: 0,
+		water: 2,
+    },
+    electric: {
+        par: 3,
+		bug: 0,
+		dark: 0,
+		dragon: 0,
+		electric: 2,
+		fairy: 0,
+		fighting: 0,
+		fire: 0,
+		flying: 2,
+		ghost: 0,
+		grass: 0,
+		ground: 1,
+		ice: 0,
+		normal: 0,
+		poison: 0,
+		psychic: 0,
+		rock: 0,
+		steel: 2,
+		water: 0,
+    },
+    fairy: {
+        bug: 2,
+		dark: 2,
+		dragon: 3,
+		electric: 0,
+		fairy: 0,
+		fighting: 2,
+		fire: 0,
+		flying: 0,
+		ghost: 0,
+		grass: 0,
+		ground: 0,
+		ice: 0,
+		normal: 0,
+		poison: 1,
+		psychic: 0,
+		rock: 0,
+		steel: 1,
+		water: 0,
+    },
+    fighting: {
+        bug: 2,
+		dark: 2,
+		dragon: 0,
+		electric: 0,
+		fairy: 1,
+		fighting: 0,
+		fire: 0,
+		flying: 1,
+		ghost: 0,
+		grass: 0,
+		ground: 0,
+		ice: 0,
+		normal: 0,
+		poison: 0,
+		psychic: 1,
+		rock: 2,
+		steel: 0,
+		water: 0,
+    },
+    fire: {
+        brn: 3,
+		bug: 2,
+		dark: 0,
+		dragon: 0,
+		electric: 0,
+		fairy: 2,
+		fighting: 0,
+		fire: 2,
+		flying: 0,
+		ghost: 0,
+		grass: 2,
+		ground: 1,
+		ice: 2,
+		normal: 0,
+		poison: 0,
+		psychic: 0,
+		rock: 1,
+		steel: 2,
+		water: 1,
+    },
+    flying: {
+        bug: 2,
+		dark: 0,
+		dragon: 0,
+		electric: 1,
+		fairy: 0,
+		fighting: 2,
+		fire: 0,
+		flying: 0,
+		ghost: 0,
+		grass: 2,
+		ground: 3,
+		ice: 1,
+		normal: 0,
+		poison: 0,
+		psychic: 0,
+		rock: 1,
+		steel: 0,
+		water: 0,
+    },
+    ghost: {
+        trapped: 3,
+		bug: 2,
+		dark: 1,
+		dragon: 0,
+		electric: 0,
+		fairy: 0,
+		fighting: 3,
+		fire: 0,
+		flying: 0,
+		ghost: 1,
+		grass: 0,
+		ground: 0,
+		ice: 0,
+		normal: 3,
+		poison: 2,
+		psychic: 0,
+		rock: 0,
+		steel: 0,
+		water: 0,
+    },
+    grass: {
+        powder: 3,
+        bug: 1,
+        dark: 0,
+        dragon: 0,
+        electric: 2,
+        fairy: 0,
+        fighting: 0,
+        fire: 1,
+        flying: 1,
+        ghost: 0,
+        grass: 2,
+        ground: 2,
+        ice: 1,
+        normal: 0,
+        poison: 1,
+        psychic: 0,
+        rock: 0,
+        steel: 0,
+        water: 2,    
+    },
+    ground: {
+        sandstorm: 3,
+        bug: 0,
+        dark: 0,
+        dragon: 0,
+        electric: 3,
+        fairy: 0,
+        fighting: 0,
+        fire: 0,
+        flying: 0,
+        ghost: 0,
+        grass: 1,
+        ground: 0,
+        ice: 1,
+        normal: 0,
+        poison: 2,
+        psychic: 0,
+        rock: 2,
+        steel: 0,
+        water: 1,
+    },
+    ice: {
+        hail: 3,
+        frz: 3,
+        bug: 0,
+        dark: 0,
+        dragon: 0,
+        electric: 0,
+        fairy: 0,
+        fighting: 1,
+        fire: 1,
+        flying: 0,
+        ghost: 0,
+        grass: 0,
+        ground: 0,
+        ice: 2,
+        normal: 0,
+        poison: 0,
+        psychic: 0,
+        rock: 1,
+        steel: 1,
+        water: 0,
+    },
+    normal: {
+        bug: 0,
+        dark: 0,
+        dragon: 0,
+        electric: 0,
+        fairy: 0,
+        fighting: 1,
+        fire: 0,
+        flying: 0,
+        ghost: 3,
+        grass: 0,
+        ground: 0,
+        ice: 0,
+        normal: 0,
+        poison: 0,
+        psychic: 0,
+        rock: 0,
+        steel: 0,
+        water: 0,
+    },
+    poison: {
+        psn: 3,
+        tox: 3,
+        bug: 2,
+        dark: 0,
+        dragon: 0,
+        electric: 0,
+        fairy: 2,
+        fighting: 2,
+        fire: 0,
+        flying: 0,
+        ghost: 0,
+        grass: 2,
+        ground: 1,
+        ice: 0,
+        normal: 0,
+        poison: 2,
+        psychic: 1,
+        rock: 0,
+        steel: 0,
+        water: 0,
+    },
+    psychic: {
+        bug: 1,
+        dark: 1,
+        dragon: 0,
+        electric: 0,
+        fairy: 0,
+        fighting: 2,
+        fire: 0,
+        flying: 0,
+        ghost: 1,
+        grass: 0,
+        ground: 0,
+        ice: 0,
+        normal: 0,
+        poison: 0,
+        psychic: 2,
+        rock: 0,
+        steel: 0,
+        water: 0,
+    },
+    rock: {
+        sandstorm: 3,
+        bug: 0,
+        dark: 0,
+        dragon: 0,
+        electric: 0,
+        fairy: 0,
+        fighting: 1,
+        fire: 2,
+        flying: 2,
+        ghost: 0,
+        grass: 1,
+        ground: 1,
+        ice: 0,
+        normal: 2,
+        poison: 2,
+        psychic: 0,
+        rock: 0,
+        steel: 1,
+        water: 1,
+    },
+    steel: {
+        psn: 3,
+        tox: 3,
+        sandstorm: 3,
+        bug: 2,
+        dark: 0,
+        dragon: 2,
+        electric: 0,
+        fairy: 2,
+        fighting: 1,
+        fire: 1,
+        flying: 2,
+        ghost: 0,
+        grass: 2,
+        ground: 1,
+        ice: 2,
+        normal: 2,
+        poison: 3,
+        psychic: 2,
+        rock: 2,
+        steel: 2,
+        water: 0,
+    },
+    water: {
+        bug: 0,
+        dark: 0,
+        dragon: 0,
+        electric: 1,
+        fairy: 0,
+        fighting: 0,
+        fire: 2,
+        flying: 0,
+        ghost: 0,
+        grass: 1,
+        ground: 0,
+        ice: 2,
+        normal: 0,
+        poison: 0,
+        psychic: 0,
+        rock: 0,
+        steel: 2,
+        water: 2,
+    }
+};
+
 let actionField ;
 let battleLog ;
 
@@ -57,7 +434,7 @@ let startGame = () => {
 
 btn.addEventListener("click", startGame);
 
-let GenerateBattleField = () =>{
+let GenerateBattleField = () => {
     screen.innerHTML = `
     <div>
     <div class="battleField">
@@ -91,14 +468,14 @@ let GenerateBattleField = () =>{
     battleLog = document.getElementById("battleRecord");
 };
 
-let updateTurn = () =>{
+let updateTurn = () => {
     const turn_count = document.getElementById("turn-counter");
     turn_count.innerHTML = `
     Turn ${turn_counter}
     `;
 };
 
-let goPokemonPlayer = (data) =>{
+let goPokemonPlayer = (data) => {
     const playerPoke = document.getElementById("activePlayerPokemon");
     var Level = Math.floor((Math.random() * 35 ) + 60);
     const IV = Math.floor(Math.random() * 31);
@@ -119,7 +496,9 @@ let goPokemonPlayer = (data) =>{
     const Base_SpecialDefence = data.stats[4].base_stat;
     const Final_SpecialDefence = (Math.floor(0.01 * (2 * Base_SpecialDefence + IV + Math.floor(0.25 * 84)) * Level) + 5);
     const ability = data.abilities[0].ability.name;
+    const type = data.types[0].type.name ;
     pokeData.Level = Level;
+    pokeData.Type = type;
     pokeData.IV = IV;
     pokeData.pokeName = pokeName;
     pokeData.Base_hp = Base_hp;
@@ -154,7 +533,7 @@ let goPokemonPlayer = (data) =>{
     moveSelector(data);
 };
 
-let goPokemonPc = (data1) =>{
+let goPokemonPc = (data1) => {
     const pcPoke = document.getElementById("activePcPokemon");
     const pcLevel = Math.floor((Math.random() * 35 ) + 60);
     const pcIV = Math.floor(Math.random() * 31);
@@ -175,8 +554,9 @@ let goPokemonPc = (data1) =>{
     const pcBase_SpecialDefence = data1.stats[4].base_stat;
     const pcFinal_SpecialDefence = (Math.floor(0.01 * (2 * pcBase_SpecialDefence + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
     const pcability = data1.abilities[0].ability.name;
-
+    const pcType = data1.types[0].type.name ;
     pcPokeData.pcLevel = pcLevel;
+    pcPokeData.pcType = pcType;
     pcPokeData.pcIV = pcIV;
     pcPokeData.pcPokeName = pcPokeName;
     pcPokeData.pcBase_hp = pcBase_hp;
@@ -438,7 +818,7 @@ let reDesignMove4 = (move4Data) => {
     btn4.style.borderColor = `${themeColor4}`;
 };
 
-let GenerateActionField = (pokeData) =>{
+let GenerateActionField = (pokeData) => {
     actionField = document.getElementById("actionField");
     actionField.innerHTML=`
     <div class="action-msg">
@@ -477,7 +857,7 @@ let GenerateActionField = (pokeData) =>{
     addEventListen();
 };
 
-let addEventListen = () =>{
+let addEventListen = () => {
     moveBtn1 = document.getElementById("move1");
     moveBtn1.addEventListener("click", function () { Attack(1);});
     moveBtn2 = document.getElementById("move2");
@@ -488,19 +868,19 @@ let addEventListen = () =>{
     moveBtn4.addEventListener("click", function () { Attack(4);});
 };
 
-let blockActionField = () =>{
+let blockActionField = () => {
     actionField.innerHTML=`
     <p>Waiting for next turn...</p>
     `;
 };
 
-let updateBattlelog = () =>{
+let updateBattlelog = () => {
     battleLog.innerHTML = battleLog.innerHTML + `
     <div class="turn-record">Turn ${turn_counter}</div>
     `;
 };
 
-let unblockActionField = (pokeData) =>{
+let unblockActionField = (pokeData) => {
     actionField.innerHTML=`
     <div class="action-msg">
         <span>What will <b>${pokeData.pokeName}</b> do?</span>
@@ -541,7 +921,7 @@ let unblockActionField = (pokeData) =>{
     addEventListen();
 };
 
-let declareWinner = (Name,pokename) =>{
+let declareWinner = (Name,pokename) => {
     actionField.innerHTML = `
     <center><strong>${Name} Won The Battle</strong></center>
     `;
@@ -551,7 +931,7 @@ let declareWinner = (Name,pokename) =>{
     throw 'Game End';
 };
 
-let winnerCheck = () =>{
+let winnerCheck = () => {
     if (pcPokeHealth.value == 0)
     {
         declareWinner("TLE_Pheonix",pcPokeData.pcPokeName);
@@ -562,7 +942,45 @@ let winnerCheck = () =>{
     }
 };
 
-let Turn = (playerMove, pcMove) =>{
+let effectivenessChecker = (mov) => {
+    let a = 1;
+    let b = TypeChart[pcPokeData.pcType][mov.type];
+
+    if(b == 1)
+    {
+        a = 2;
+    }
+    else if (b == 2)
+    {
+        a = 0.5;
+    }
+    else if (b == 3)
+    {
+        a = 0;
+    }
+    return a;
+};
+
+let pcEffectivenessChecker = (mov) => {
+    let a = 1;
+    let b = TypeChart[pcPokeData.pcType][mov.type];
+
+    if(b == 1)
+    {
+        a = 2;
+    }
+    else if (b == 2)
+    {
+        a = 0.5;
+    }
+    else if (b == 3)
+    {
+        a = 0;
+    }
+    return a;
+};
+
+let Turn = (playerMove, pcMove) => {
     winnerCheck();
     let plyAtt ;
     let plyDef ;
@@ -599,14 +1017,18 @@ let Turn = (playerMove, pcMove) =>{
         plyDef = pokeData.Final_Defence;
     }
 
+    let type = effectivenessChecker(playerMove);
+
+    let pcType = pcEffectivenessChecker(pcMove);
+
     let critical = 1;
     let criticalPc = 1;
     let criticalChance = Math.floor((Math.random() * 100)+1);
+    let criticalChancePc = Math.floor((Math.random() * 100)+1);
     if (criticalChance >= 0 && criticalChance <=5)
     {
         critical = 1.5;
     }
-    let criticalChancePc = Math.floor((Math.random() * 100)+1);
     if (criticalChancePc >= 0 && criticalChancePc <=5)
     {
         criticalPc = 1.5;
@@ -615,14 +1037,23 @@ let Turn = (playerMove, pcMove) =>{
     let random = (Math.floor((Math.random() * 15) + 85))/100;
     let randomPc = (Math.floor((Math.random() * 15) + 85))/100;
 
-    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2)*critical*random);
-    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2)*criticalPc*randomPc);
+    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2)*critical*random*type);
+    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2)*criticalPc*randomPc*pcType);
 
     let damageperc ;
     damageperc = Math.floor((damage/pcPokeData.pcFinal_HP)*100);
+    if(damageperc > pcPokeHealth.value)
+    {
+        damageperc = pcPokeHealth.value;
+    }
     let pcDamageperc ;
+
     pcDamageperc = Math.floor((pcDamage/pokeData.Final_HP)*100);
-    
+    if(pcDamageperc > pokeHealth.value)
+    {
+        pcDamageperc = pokeHealth.value;
+    }
+
     updateBattlelog();
 
     if (pcPokeData.pcFinal_Speed > pokeData.Final_Speed)
@@ -634,18 +1065,66 @@ let Turn = (playerMove, pcMove) =>{
 
         if (criticalPc == 1.5)
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-            <div>A critical hit!</div
-            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-            `;
+            switch(pcType) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pokeData.pokeName}</div> 
+                    `;
+                    break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+              }
         }
         else
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-            `;
+            switch(pcType) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pokeData.pokeName}</div> 
+                    `;
+                    break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+              }
         }
         
         pokeData.health -= pcDamage;
@@ -659,18 +1138,66 @@ let Turn = (playerMove, pcMove) =>{
 
         if (critical == 1.5)
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-            <div>A critical hit!</div>
-            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-            `;
+            switch(type) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div> 
+                    `;
+                    break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+              }
         }
         else
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-            `;
+            switch(type) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div> 
+                    `;
+                    break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+              }
         }
         
         winnerCheck();
@@ -684,18 +1211,67 @@ let Turn = (playerMove, pcMove) =>{
 
         if (critical == 1.5)
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-            <div>A critical hit!</div>
-            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-            `;
+            switch(type) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                    break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    `;
+                    break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+              }
         }
         else
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-            <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
-            `;
+            switch(type) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;  
+                  break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+                  break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    `;
+                  break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    `;
+              }
+            
         }
         
         winnerCheck();
@@ -707,18 +1283,67 @@ let Turn = (playerMove, pcMove) =>{
 
         if (criticalPc == 1.5)
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-            <div>A critical hit!</div>
-            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-            `;
+            switch(pcType) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                  break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                  break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    `;
+                  break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>A critical hit!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+              }
+            
         }
         else
         {
-            battleLog.innerHTML = battleLog.innerHTML + `
-            <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-            <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
-            `;
+            switch(pcType) {
+                case 2:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's super effective!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                  break;
+                case 0.5:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It's not very effective...</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+                  break;
+                case 0:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    `;
+                  break;
+                default:
+                    battleLog.innerHTML = battleLog.innerHTML + `
+                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    `;
+              }
         }
         
         pokeData.health -= pcDamage;
@@ -771,10 +1396,11 @@ let Attack = (n) => {
     }
 };
 
-let loadPokemons = () =>{
+let loadPokemons = () => {
     const url = "https://pokeapi.co/api/v2/pokemon/";
 
     let id = Math.floor(Math.random() * 905) + 1;
+    // let id = 6;
     const finalUrl = url + id;
     fetch(finalUrl)
     .then((Response) => Response.json())
@@ -783,6 +1409,7 @@ let loadPokemons = () =>{
     });
 
     let idPc = Math.floor(Math.random() * 905) + 1;
+    // let idPc = 3;
     const finalUrlPc = url + idPc;
     fetch(finalUrlPc)
     .then((Response) => Response.json())
