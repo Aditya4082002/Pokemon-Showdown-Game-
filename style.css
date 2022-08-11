@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
 
 *{
     margin: 0px;
@@ -126,6 +127,7 @@ progress::-webkit-progress-bar {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
     background-color: rgb(216, 215, 215);
+    font-size: 13px;
     border: 5px solid grey;
     height: 580px;
     width: 886px;
@@ -238,6 +240,7 @@ progress::-webkit-progress-bar {
 }
 
 .turn-counter{
+    padding: 5px;
     position: relative;
     color: black;
     font-weight: bolder;
@@ -249,4 +252,52 @@ progress::-webkit-progress-bar {
     top: 10px;
     left: 10px;
     text-align: center;
+}
+
+.hover-pokeInfo{
+    padding: 3px;
+    display: none;
+    position: relative;
+    height: 115px;
+    width: 300px;
+    top: 70px;
+    left: 8px;
+    z-index: 2;
+    background-color: azure;
+    border: 2px solid rgb(94, 92, 92);
+    border-radius: 7px;
+    opacity: 0.9;
+}
+
+.hover-pcPokeInfo{
+    padding: 3px;
+    display: none;
+    position: relative;
+    height: 105px;
+    width: 250px;
+    top: 20px;
+    left: 230px;
+    background-color: azure;
+    z-index: 2;
+    border: 2px solid rgb(94, 92, 92);
+    border-radius: 7px;
+    opacity: 0.9;
+}
+
+.mini-info-box{
+    height: 35px;
+    padding-bottom: 5px;
+    font-family: 'Secular One', sans-serif;
+    font-size: 15px;
+    /* font-weight: 900;  */
+    border-bottom: 1px solid rgb(94, 92, 92);
+}
+
+.mini-info-box2{
+    margin-top: 5px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+.space{
+    margin: 4px;
 }
