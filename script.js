@@ -406,6 +406,7 @@ let hpbox ;
 let pokeData = {};
 let pokeHealth ;
 let pokeHealthPerc ;
+let hover_pokeInfo ;
 let move1 = {};
 let move2 = {};
 let move3 = {};
@@ -414,6 +415,7 @@ let move4 = {};
 let pcPokeData ={};
 let pcPokeHealth ;
 let pcPokeHealthPerc ;
+let hover_pcPokeInfo ;
 let pcMove1 = {};
 let pcMove2 = {};
 let pcMove3 = {};
@@ -434,6 +436,21 @@ let startGame = () => {
 
 btn.addEventListener("click", startGame);
 
+let showPcInfo = () => {
+    hover_pcPokeInfo.style.display = `block`;
+};
+
+let hidePcInfo = () => {
+    hover_pcPokeInfo.style.display = `none`;
+};
+let showInfo = () => {
+    hover_pokeInfo.style.display = `block`;
+};
+
+let hideInfo = () => {
+    hover_pokeInfo.style.display = `none`;
+};
+
 let GenerateBattleField = () => {
     screen.innerHTML = `
     <div>
@@ -447,6 +464,14 @@ let GenerateBattleField = () => {
             </div>
             <div class="field">
                 <div class="turn-counter" id="turn-counter">Turn ${turn_counter}</div>
+                <div class="hover-pcPokeInfo" id="hover-pcPokeInfo">
+                <div class="mini-info-box" id="mini-info-box-pc"></div>
+                <div class="mini-info-box2" id="mini-info-box2-pc"></div>
+                </div>
+                <div class="hover-pokeInfo" id="hover-pokeInfo">
+                <div class="mini-info-box" id="mini-info-box"></div>
+                <div class="mini-info-box2" id="mini-info-box2"></div>
+                </div>
                 <div id="activePlayerPokemon"></div>
                 <div id="activePcPokemon"></div>
             </div>
@@ -466,12 +491,44 @@ let GenerateBattleField = () => {
     </div>
     `;
     battleLog = document.getElementById("battleRecord");
+    hover_pcPokeInfo = document.getElementById("hover-pcPokeInfo");
+    hover_pokeInfo = document.getElementById("hover-pokeInfo");
+    document.getElementById("activePcPokemon").addEventListener("mouseover",showPcInfo);
+    document.getElementById("activePlayerPokemon").addEventListener("mouseover",showInfo);
+    document.getElementById("activePcPokemon").addEventListener("mouseout",hidePcInfo);
+    document.getElementById("activePlayerPokemon").addEventListener("mouseout",hideInfo);
 };
 
 let updateTurn = () => {
     const turn_count = document.getElementById("turn-counter");
     turn_count.innerHTML = `
     Turn ${turn_counter}
+    `;
+};
+
+let updateInfoBox = () => {
+    document.getElementById("mini-info-box").innerHTML = `
+    <div>${pokeData.pokeName} <img src="images/gender-m.PNG"> L${pokeData.Level}</div>
+    <div><img src="images/${pokeData.Type}.PNG"></div>
+    `;
+    document.getElementById("mini-info-box2").innerHTML = `
+    <div class="space" id="hover-hp-box">HP: ${pokeHealth.value}%(${pokeData.health}/${pokeData.Final_HP})</div>
+    <div class="space">Ability: ${pokeData.ability}</div>
+    <div class="space">Item: None</div>
+    <div class="space">Atk ${pokeData.Final_Attack} / Def ${pokeData.Final_Defence} / SpA ${pokeData.Final_SpecialAttack} / SpD ${pokeData.Final_SpecialDefence} / Spe ${pokeData.Final_Speed}</div>
+    `;
+};
+
+let updatePcInfoBox = () => {
+    console.log(pcPokeData)
+    document.getElementById("mini-info-box-pc").innerHTML = `
+    <div>${pcPokeData.pcPokeName} <img src="images/gender-m.PNG"> L${pcPokeData.pcLevel}</div>
+    <div><img src="images/${pcPokeData.pcType}.PNG"></div>
+    `;
+    document.getElementById("mini-info-box2-pc").innerHTML = `
+    <div class="space" id="hover-hp-box">HP: ${pcPokeHealth.value}%</div>
+    <div class="space">Possible abilities: ${pcPokeData.pcability}</div>
+    <div class="space">Spe: ${pcPokeData.pcFinal_Speed}</div>
     `;
 };
 
@@ -523,13 +580,14 @@ let goPokemonPlayer = (data) => {
         <progress id="health1" value="100" max="100"></progress>
         <span id="health1perc">100%</span>
     </div>
-    <img src="${imgSrc}" style="height: 180px; width: 180px;">
+    <img id="player-poke-Img" src="${imgSrc}" style="height: 180px; width: 180px;">
     `;
 
     pokeHealth = document.getElementById("health1");
-    pokeHealthPerc =document.getElementById("health1perc");
+    pokeHealthPerc = document.getElementById("health1perc");
 
     GenerateActionField(pokeData);
+    updateInfoBox();
     moveSelector(data);
 };
 
@@ -578,11 +636,12 @@ let goPokemonPc = (data1) => {
     pcPoke.innerHTML=`
     <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
     <div class ="health"><span id="healthperc">100%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
-    <img src="${pcImgSrc}" style="height: 180px; width: 180px;">
+    <img id="pc-poke-Img" src="${pcImgSrc}" style="height: 180px; width: 180px;">
     `;
     pcPokeHealth = document.getElementById("health");
     pcPokeHealthPerc =document.getElementById("healthperc");
 
+    updatePcInfoBox();
     pcMoveSelector(data1);
 };
 
@@ -963,7 +1022,7 @@ let effectivenessChecker = (mov) => {
 
 let pcEffectivenessChecker = (mov) => {
     let a = 1;
-    let b = TypeChart[pcPokeData.pcType][mov.type];
+    let b = TypeChart[pokeData.Type][mov.type];
 
     if(b == 1)
     {
@@ -1062,6 +1121,7 @@ let Turn = (playerMove, pcMove) => {
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
+        updateInfoBox();
 
         if (criticalPc == 1.5)
         {
@@ -1129,12 +1189,14 @@ let Turn = (playerMove, pcMove) => {
         
         pokeData.health -= pcDamage;
         hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        updateInfoBox();
         winnerCheck();
 
         pcPokeHealth.value -= damageperc;
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
+        updatePcInfoBox();
 
         if (critical == 1.5)
         {
@@ -1208,6 +1270,7 @@ let Turn = (playerMove, pcMove) => {
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
+        updatePcInfoBox();
 
         if (critical == 1.5)
         {
@@ -1280,6 +1343,7 @@ let Turn = (playerMove, pcMove) => {
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
+        updateInfoBox();
 
         if (criticalPc == 1.5)
         {
@@ -1348,13 +1412,13 @@ let Turn = (playerMove, pcMove) => {
         
         pokeData.health -= pcDamage;
         hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        updateInfoBox();
         winnerCheck();
     }
     
     unblockActionField(pokeData);
     turn_counter++;
     updateTurn();
-
 };
 
 let Attack = (n) => {
@@ -1400,7 +1464,7 @@ let loadPokemons = () => {
     const url = "https://pokeapi.co/api/v2/pokemon/";
 
     let id = Math.floor(Math.random() * 905) + 1;
-    // let id = 6;
+    // let id = 3;
     const finalUrl = url + id;
     fetch(finalUrl)
     .then((Response) => Response.json())
@@ -1409,7 +1473,7 @@ let loadPokemons = () => {
     });
 
     let idPc = Math.floor(Math.random() * 905) + 1;
-    // let idPc = 3;
+    // let idPc = 6;
     const finalUrlPc = url + idPc;
     fetch(finalUrlPc)
     .then((Response) => Response.json())
