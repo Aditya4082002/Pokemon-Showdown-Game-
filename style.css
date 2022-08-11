@@ -125,11 +125,12 @@ progress::-webkit-progress-bar {
 
 .battleRecord{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
     box-sizing: border-box;
     background-color: rgb(216, 215, 215);
     font-size: 13px;
     border: 5px solid grey;
-    height: 580px;
+    height: 100vh;
     width: 886px;
     padding: 3px;
     overflow-y: auto;
@@ -289,7 +290,6 @@ progress::-webkit-progress-bar {
     padding-bottom: 5px;
     font-family: 'Secular One', sans-serif;
     font-size: 15px;
-    /* font-weight: 900;  */
     border-bottom: 1px solid rgb(94, 92, 92);
 }
 
@@ -298,6 +298,46 @@ progress::-webkit-progress-bar {
     font-family:Arial, Helvetica, sans-serif;
     font-size: 13px;
 }
+
+.mini-info-box-move{
+    margin-top: 5px;
+    font-size: 13px;
+    font-family:Arial, Helvetica, sans-serif;
+    border-bottom: 1px solid rgb(94, 92, 92);
+}
 .space{
     margin: 4px;
+}
+
+.hover-move{
+    padding: 3px;
+    position: absolute;
+    background-color: azure;
+    opacity: 0.9;
+    border: 2px solid rgb(94, 92, 92);
+    border-radius: 7px;
+    height: 100px;
+    width: 170px;
+    z-index: 2;
+}
+
+#hover-move1{
+    display: none;
+    left: 10px;
+    top: 370px;
+}
+#hover-move2{
+    display: none;
+    top: 370px;
+    left: 191px;
+}
+#hover-move3{
+    display: none;
+    top: 370px;
+    left: 375px;
+}
+#hover-move4{
+    display: none;
+    top: 370px;
+    left: 560px;
 }
