@@ -520,7 +520,6 @@ let updateInfoBox = () => {
 };
 
 let updatePcInfoBox = () => {
-    console.log(pcPokeData)
     document.getElementById("mini-info-box-pc").innerHTML = `
     <div>${pcPokeData.pcPokeName} <img src="images/gender-m.PNG"> L${pcPokeData.pcLevel}</div>
     <div><img src="images/${pcPokeData.pcType}.PNG"></div>
@@ -777,6 +776,7 @@ let designMove1 = (move1Data) => {
 
     btn1.style.background = `linear-gradient(to top, ${themeColor1}, white)`;
     btn1.style.borderColor = `${themeColor1}`;
+    updateMoveinfo(1);
 };
 
 let designMove2 = (move2Data) => {
@@ -791,6 +791,7 @@ let designMove2 = (move2Data) => {
 
     btn2.style.background = `linear-gradient(to top, ${themeColor2}, white)`;
     btn2.style.borderColor = `${themeColor2}`;
+    updateMoveinfo(2);
 };
 
 let designMove3 = (move3Data) => {
@@ -805,6 +806,7 @@ let designMove3 = (move3Data) => {
 
     btn3.style.background = `linear-gradient(to top, ${themeColor3}, white)`;
     btn3.style.borderColor = `${themeColor3}`;
+    updateMoveinfo(3);
 };
 
 let designMove4 = (move4Data) => {
@@ -819,6 +821,7 @@ let designMove4 = (move4Data) => {
 
     btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
     btn4.style.borderColor = `${themeColor4}`;
+    updateMoveinfo(4);
 };
 
 let reDesignMove1 = (move1Data) => {
@@ -877,6 +880,53 @@ let reDesignMove4 = (move4Data) => {
     btn4.style.borderColor = `${themeColor4}`;
 };
 
+let showMoveInfo = (id) => {
+    document.getElementById(id).style.display = `block`;
+};
+
+let hideMoveInfo = (id) => {
+    document.getElementById(id).style.display = `none`;
+};
+
+let updateMoveinfo = (id) => {
+    let m ;
+    let d ;
+    switch (id) {
+        case 1:
+            m = move1;
+            d = "hover-move1";
+            break;
+    
+        case 2:
+            m = move2;
+            d = "hover-move2";
+            break;
+    
+        case 3:
+            m = move3;
+            d = "hover-move3";
+            break;
+    
+        case 4:
+            m = move4;
+            d = "hover-move4";
+            break;
+    }
+    console.log(m);
+    document.getElementById(d).innerHTML = `
+    <div class="mini-info-box">
+        <div>${m.name}</div>
+        <div><img src="images/${m.type}.PNG"></div>
+    </div>
+    <div class="mini-info-box-move">
+        <div>Base power: ${m.power}</div>
+        <div>Accuracy: ${m.accuracy}%</div>
+    </div>
+    <div>Effect: Null</div>
+    
+    `;
+};
+
 let GenerateActionField = (pokeData) => {
     actionField = document.getElementById("actionField");
     actionField.innerHTML=`
@@ -890,30 +940,33 @@ let GenerateActionField = (pokeData) => {
         <div class="attack-text">Attack</div>
         <div class="attack-menu">
             <div class="move-list">
+                <div class="hover-move" id="hover-move1"></div>
+                <div class="hover-move" id="hover-move2"></div>
+                <div class="hover-move" id="hover-move3"></div>
+                <div class="hover-move" id="hover-move4"></div>
                 <button class="move" id="move1">
-                   
                 </button>
                 <button class="move" id="move2">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
                 <button class="move" id="move3">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
                 <button class="move" id="move4">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
             </div>
         </div>
     </div>
     `;
     hpbox = document.getElementById("hpBox");
+    document.getElementById("move1").addEventListener("mouseover",function () { showMoveInfo("hover-move1");});
+    document.getElementById("move1").addEventListener("mouseout",function () { hideMoveInfo("hover-move1");});
+    document.getElementById("move2").addEventListener("mouseover",function () { showMoveInfo("hover-move2");});
+    document.getElementById("move2").addEventListener("mouseout",function () { hideMoveInfo("hover-move2");});
+    document.getElementById("move3").addEventListener("mouseover",function () { showMoveInfo("hover-move3");});
+    document.getElementById("move3").addEventListener("mouseout",function () { hideMoveInfo("hover-move3");});
+    document.getElementById("move4").addEventListener("mouseover",function () { showMoveInfo("hover-move4");});
+    document.getElementById("move4").addEventListener("mouseout",function () { hideMoveInfo("hover-move4");});
     addEventListen();
+
 };
 
 let addEventListen = () => {
@@ -951,23 +1004,17 @@ let unblockActionField = (pokeData) => {
         <div class="attack-text">Attack</div>
         <div class="attack-menu">
             <div class="move-list">
+                <div class="hover-move" id="hover-move1"></div>
+                <div class="hover-move" id="hover-move2"></div>
+                <div class="hover-move" id="hover-move3"></div>
+                <div class="hover-move" id="hover-move4"></div>
                 <button class="move" id="move1">
-                   
                 </button>
                 <button class="move" id="move2">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
                 <button class="move" id="move3">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
                 <button class="move" id="move4">
-                    <p>Name</p>
-                    <small>type</small>
-                    <small class="pp">pp 10/10</small>
                 </button>
             </div>
         </div>
@@ -977,6 +1024,18 @@ let unblockActionField = (pokeData) => {
     reDesignMove2(move2);
     reDesignMove3(move3);
     reDesignMove4(move4);
+    updateMoveinfo(1);
+    updateMoveinfo(2);
+    updateMoveinfo(3);
+    updateMoveinfo(4);
+    document.getElementById("move1").addEventListener("mouseover",function () { showMoveInfo("hover-move1");});
+    document.getElementById("move1").addEventListener("mouseout",function () { hideMoveInfo("hover-move1");});
+    document.getElementById("move2").addEventListener("mouseover",function () { showMoveInfo("hover-move2");});
+    document.getElementById("move2").addEventListener("mouseout",function () { hideMoveInfo("hover-move2");});
+    document.getElementById("move3").addEventListener("mouseover",function () { showMoveInfo("hover-move3");});
+    document.getElementById("move3").addEventListener("mouseout",function () { hideMoveInfo("hover-move3");});
+    document.getElementById("move4").addEventListener("mouseover",function () { showMoveInfo("hover-move4");});
+    document.getElementById("move4").addEventListener("mouseout",function () { hideMoveInfo("hover-move4");});
     addEventListen();
 };
 
