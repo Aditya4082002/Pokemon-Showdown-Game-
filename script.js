@@ -427,9 +427,10 @@ let moveBtn3;
 let moveBtn4;
 
 const screen = document.getElementById("screen");
-const btn = document.getElementById("start-btn");
+let btn = document.getElementById("start-btn");
 
 let startGame = () => {
+    turn_counter = 1;
     GenerateBattleField();
     loadPokemons();
 };
@@ -533,7 +534,7 @@ let updatePcInfoBox = () => {
 
 let goPokemonPlayer = (data) => {
     const playerPoke = document.getElementById("activePlayerPokemon");
-    var Level = Math.floor((Math.random() * 35 ) + 60);
+    var Level = Math.floor((Math.random() * 15 ) + 75);
     const IV = Math.floor(Math.random() * 31);
     const imgSrc = data.sprites.back_default;
     const pokeName = data.name[0].toUpperCase() + data.name.slice(1);
@@ -592,7 +593,7 @@ let goPokemonPlayer = (data) => {
 
 let goPokemonPc = (data1) => {
     const pcPoke = document.getElementById("activePcPokemon");
-    const pcLevel = Math.floor((Math.random() * 35 ) + 60);
+    const pcLevel = Math.floor((Math.random() * 15 ) + 75);
     const pcIV = Math.floor(Math.random() * 31);
     const pcImgSrc = data1.sprites.front_default;
     const pcPokeName = data1.name[0].toUpperCase() + data1.name.slice(1);
@@ -724,7 +725,6 @@ let pcMoveSelector = (data) => {
         pcMove1.pp = Data.pp;
         pcMove1.accuracy = Data.accuracy;
         pcMove1.class = Data.damage_class.name;
-        console.log(pcMove1);
         });
         
     fetch(finalUrlMove2)
@@ -736,7 +736,6 @@ let pcMoveSelector = (data) => {
         pcMove2.pp = Data.pp;
         pcMove2.accuracy = Data.accuracy;
         pcMove2.class = Data.damage_class.name;
-        console.log(pcMove2);
         });
         
     fetch(finalUrlMove3)
@@ -748,7 +747,6 @@ let pcMoveSelector = (data) => {
         pcMove3.pp = Data.pp;
         pcMove3.accuracy = Data.accuracy;
         pcMove3.class = Data.damage_class.name;
-        console.log(pcMove3);
         });
         
     fetch(finalUrlMove4)
@@ -760,7 +758,6 @@ let pcMoveSelector = (data) => {
         pcMove4.pp = Data.pp;
         pcMove4.accuracy = Data.accuracy;
         pcMove4.class = Data.damage_class.name;
-        console.log(pcMove4);
         });
 };
 
@@ -912,7 +909,6 @@ let updateMoveinfo = (id) => {
             d = "hover-move4";
             break;
     }
-    console.log(m);
     document.getElementById(d).innerHTML = `
     <div class="mini-info-box">
         <div>${m.name}</div>
@@ -1039,13 +1035,29 @@ let unblockActionField = (pokeData) => {
     addEventListen();
 };
 
+let reload = () => {
+    screen.innerHTML = `
+    <div class="container" id="container">
+        <div class="back"><button id="start-btn">Battle!<p class="white">Play with pc</p></button></div>
+    </div>
+    `;
+    btn = document.getElementById("start-btn");
+    btn.addEventListener("click", startGame);
+};
+
 let declareWinner = (Name,pokename) => {
     actionField.innerHTML = `
     <center><strong>${Name} Won The Battle</strong></center>
+    <div class="afterMatchMenu">
+        <button class="afterMatchBtn" id="rematch">Rematch</button>
+        <button class="afterMatchBtn" id="mainMenu">Main menu</button>
+    </div>
     `;
     battleLog.innerHTML = battleLog.innerHTML + `
     <div>${pokename} Fainted!</div>
     `;
+    document.getElementById("rematch").addEventListener("click",startGame);
+    document.getElementById("mainMenu").addEventListener("click",reload);
     throw 'Game End';
 };
 
