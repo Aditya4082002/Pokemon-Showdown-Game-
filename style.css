@@ -341,3 +341,17 @@ progress::-webkit-progress-bar {
     top: 370px;
     left: 560px;
 }
+
+.afterMatchMenu{
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.afterMatchBtn{
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 8px;
+    background-image: linear-gradient(to top, rgb(105, 105, 105),white);
+    cursor: pointer;
+}
