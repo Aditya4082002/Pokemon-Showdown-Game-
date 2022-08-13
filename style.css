@@ -110,7 +110,6 @@ progress::-webkit-progress-bar {
 
 .battleField{
     display: flex;
-    background-image: url(images/battleground.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 360px;
@@ -172,6 +171,7 @@ progress::-webkit-progress-bar {
 }
 
 #activePcPokemon{
+    image-rendering:optimizeQuality;
     position: absolute;
     height: 180px;
     width: 180px;
@@ -179,7 +179,23 @@ progress::-webkit-progress-bar {
     left: 400px;
 }
 
+#pc-poke-Img{
+    display: block;
+    margin: 0px auto;
+    margin-top: 20px;
+    transform: scale(1.3);
+}
+
+#player-poke-Img{
+    transform: scale(1.3);
+    display: block;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+
 #activePlayerPokemon{
+    image-rendering:optimizeQuality;
     position: absolute;
     height: 180px;
     width: 180px;
@@ -239,6 +255,10 @@ progress::-webkit-progress-bar {
     font-weight: bolder;
     width: 100%;
     border: 3px solid grey;
+}
+
+.pixelated{
+    image-rendering: pixelated;
 }
 
 .turn-counter{
@@ -527,16 +547,16 @@ progress::-webkit-progress-bar {
         height: 100px;
         width: 150px;
         top: 50px;
-        left: 160px;
-        transform: scale(0.5);
+        left: 165px;
+        transform: scale(0.6);
     }
 
     #activePlayerPokemon{
         height: 100px;
         width: 150px;
-        top: 110px;
+        top: 125px;
         left: 35px;
-        transform: scale(0.5);
+        transform: scale(0.6);
     }
 
     .pokeName{

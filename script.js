@@ -453,9 +453,10 @@ let hideInfo = () => {
 };
 
 let GenerateBattleField = () => {
+    let a = Math.floor(Math.random() * 17) + 1;
     screen.innerHTML = `
     <div id="battleField">
-    <div class="battleField" >
+    <div class="battleField" id="background" style="background-image: url(images/battleground${a}.jpg)">
             <div class="player1Box">
                 <div class="player1Info">
                     <strong>TLE_Pheonix</strong>
@@ -527,8 +528,8 @@ let updateTurn = () => {
 
 let updateInfoBox = () => {
     document.getElementById("mini-info-box").innerHTML = `
-    <div>${pokeData.pokeName} <img src="images/gender-m.PNG"> L${pokeData.Level}</div>
-    <div><img src="images/${pokeData.Type}.PNG"></div>
+    <div>${pokeData.pokeName} <img src="images/gender-m.png"> L${pokeData.Level}</div>
+    <div><img class="pixelated" src="images/${pokeData.Type}.png"></div>
     `;
     document.getElementById("mini-info-box2").innerHTML = `
     <div class="space" id="hover-hp-box">HP: ${pokeHealth.value}%(${pokeData.health}/${pokeData.Final_HP})</div>
@@ -540,8 +541,8 @@ let updateInfoBox = () => {
 
 let updatePcInfoBox = () => {
     document.getElementById("mini-info-box-pc").innerHTML = `
-    <div>${pcPokeData.pcPokeName} <img src="images/gender-m.PNG"> L${pcPokeData.pcLevel}</div>
-    <div><img src="images/${pcPokeData.pcType}.PNG"></div>
+    <div>${pcPokeData.pcPokeName} <img src="images/gender-m.png"> L${pcPokeData.pcLevel}</div>
+    <div><img class="pixelated" src="images/${pcPokeData.pcType}.png"></div>
     `;
     document.getElementById("mini-info-box2-pc").innerHTML = `
     <div class="space" id="hover-hp-box">HP: ${pcPokeHealth.value}%</div>
@@ -554,7 +555,11 @@ let goPokemonPlayer = (data) => {
     const playerPoke = document.getElementById("activePlayerPokemon");
     var Level = Math.floor((Math.random() * 15 ) + 75);
     const IV = Math.floor(Math.random() * 31);
-    const imgSrc = data.sprites.back_default;
+    // for non animated images
+    // const imgSrc = data.sprites.back_default;
+    // for animated images
+    // const imgSrc = data.sprites.versions["generation-v"]["black-white"].animated.back_default;
+    const imgSrc = "https://play.pokemonshowdown.com/sprites/ani-back/"+data.name+".gif";
     const pokeName = data.name[0].toUpperCase() + data.name.slice(1);
     const Base_hp = data.stats[0].base_stat;
     const Final_HP = Math.floor(0.01 * (2 * Base_hp + IV + Math.floor(0.25 * 88)) * Level) + Level + 10;
@@ -598,7 +603,7 @@ let goPokemonPlayer = (data) => {
         <progress id="health1" value="100" max="100"></progress>
         <span id="health1perc">100%</span>
     </div>
-    <img id="player-poke-Img" src="${imgSrc}" style="height: 180px; width: 180px;">
+    <img id="player-poke-Img" src="${imgSrc}" >
     `;
 
     pokeHealth = document.getElementById("health1");
@@ -613,7 +618,11 @@ let goPokemonPc = (data1) => {
     const pcPoke = document.getElementById("activePcPokemon");
     const pcLevel = Math.floor((Math.random() * 15 ) + 75);
     const pcIV = Math.floor(Math.random() * 31);
-    const pcImgSrc = data1.sprites.front_default;
+    // for non animated images
+    // const pcImgSrc = data1.sprites.front_default;
+    // for animated images
+    // const pcImgSrc = data1.sprites.versions["generation-v"]["black-white"].animated.front_default;
+    const pcImgSrc = "https://play.pokemonshowdown.com/sprites/ani/"+data1.name+".gif";
     const pcPokeName = data1.name[0].toUpperCase() + data1.name.slice(1);
     const pcBase_hp = data1.stats[0].base_stat;
     const pcFinal_HP = Math.floor(0.01 * (2 * pcBase_hp + pcIV + Math.floor(0.25 * 88)) * pcLevel) + pcLevel + 10;
@@ -654,8 +663,9 @@ let goPokemonPc = (data1) => {
     pcPoke.innerHTML=`
     <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
     <div class ="health"><span id="healthperc">100%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
-    <img id="pc-poke-Img" src="${pcImgSrc}" style="height: 180px; width: 180px;">
+    <img id="pc-poke-Img" src="${pcImgSrc}" >
     `;
+    // style="height: 120px; width: 120px;"
     pcPokeHealth = document.getElementById("health");
     pcPokeHealthPerc =document.getElementById("healthperc");
 
@@ -930,7 +940,7 @@ let updateMoveinfo = (id) => {
     document.getElementById(d).innerHTML = `
     <div class="mini-info-box">
         <div>${m.name}</div>
-        <div><img src="images/${m.type}.PNG"></div>
+        <div><img class="pixelated" src="images/${m.type}.png"></div>
     </div>
     <div class="mini-info-box-move">
         <div>Base power: ${m.power}</div>
@@ -1552,17 +1562,21 @@ let Attack = (n) => {
 let loadPokemons = () => {
     const url = "https://pokeapi.co/api/v2/pokemon/";
 
-    let id = Math.floor(Math.random() * 905) + 1;
-    // let id = 3;
+    // for non animated images 905 pokemons are available
+    // let id = Math.floor(Math.random() * 905) + 1;
+    // for animated images only 649 pokemons are available
+    let id = Math.floor(Math.random() * 890) + 1;
     const finalUrl = url + id;
     fetch(finalUrl)
     .then((Response) => Response.json())
     .then((data) => {
         goPokemonPlayer(data);
     });
-
-    let idPc = Math.floor(Math.random() * 905) + 1;
-    // let idPc = 6;
+    
+    // for non animated images 905 pokemons are available
+    // let idPc = Math.floor(Math.random() * 905) + 1;
+    // for animated images only 649 pokemons are available
+    let idPc = Math.floor(Math.random() * 890) + 1;
     const finalUrlPc = url + idPc;
     fetch(finalUrlPc)
     .then((Response) => Response.json())
@@ -1570,3 +1584,6 @@ let loadPokemons = () => {
         goPokemonPc(data1);
     });
 };
+
+//link for backgrounds images
+// https://play.pokemonshowdown.com/sprites/gen6bgs/
