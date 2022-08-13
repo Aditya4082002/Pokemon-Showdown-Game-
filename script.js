@@ -454,8 +454,8 @@ let hideInfo = () => {
 
 let GenerateBattleField = () => {
     screen.innerHTML = `
-    <div>
-    <div class="battleField">
+    <div id="battleField">
+    <div class="battleField" >
             <div class="player1Box">
                 <div class="player1Info">
                     <strong>TLE_Pheonix</strong>
@@ -490,7 +490,10 @@ let GenerateBattleField = () => {
     </div>
     <div class="battleRecord" id="battleRecord">
     </div>
+    <button class="chat-btn" id="chat-btn" >< chat</button>
     `;
+    document.getElementById("chat-btn").addEventListener("click",switch_display);
+    document.getElementById("chat-btn").addEventListener("click",switch_display);
     battleLog = document.getElementById("battleRecord");
     hover_pcPokeInfo = document.getElementById("hover-pcPokeInfo");
     hover_pokeInfo = document.getElementById("hover-pokeInfo");
@@ -499,6 +502,21 @@ let GenerateBattleField = () => {
     document.getElementById("activePcPokemon").addEventListener("mouseout",hidePcInfo);
     document.getElementById("activePlayerPokemon").addEventListener("mouseout",hideInfo);
 };
+
+let switch_display = () => {   
+    if (document.getElementById("chat-btn").innerHTML == '&lt; chat')
+    {
+        document.getElementById("battleField").style.display = `none`;
+        document.getElementById("battleRecord").style.display = `block`;
+        document.getElementById("chat-btn").innerHTML= `battle >`;
+    }
+    else
+    {
+        document.getElementById("battleRecord").style.display = `none`;
+        document.getElementById("battleField").style.display = `block`;
+        document.getElementById("chat-btn").innerHTML= `< chat`;
+    }
+}
 
 let updateTurn = () => {
     const turn_count = document.getElementById("turn-counter");
