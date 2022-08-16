@@ -110,6 +110,7 @@ progress::-webkit-progress-bar {
 
 .battleField{
     display: flex;
+    background-color: #ffffff;
     background-repeat: no-repeat;
     background-size: cover;
     height: 360px;
@@ -229,11 +230,20 @@ progress::-webkit-progress-bar {
     font-size: x-large;
 }
 
+.switchBox{
+    margin-top: 10px;
+}
+
+.switch-text{
+    color: rgb(63, 89, 235);
+    font-weight: bolder;
+    font-size: x-large;
+}
+
 .move-list{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-
 }
 
 .move{
@@ -242,6 +252,29 @@ progress::-webkit-progress-bar {
     height: 40px;
     width: 180px;
     cursor: pointer;
+}
+
+.benched-pokemon{
+    border: 1px solid grey;
+    border-radius: 10px;
+    height: 40px;
+    width: 120px;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mini-health{
+    position: relative;
+    bottom: 8px;
+    width: 120px;
+}
+
+.small-pokename{
+    width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 5px;
 }
 
 .pp{
@@ -373,7 +406,7 @@ progress::-webkit-progress-bar {
     border: 1px solid grey;
     border-radius: 5px;
     padding: 8px;
-    background-image: linear-gradient(to top, rgb(105, 105, 105),white);
+    background-image: linear-gradient(to top, rgb(173, 165, 165),white);
     cursor: pointer;
 }
 
@@ -405,6 +438,11 @@ progress::-webkit-progress-bar {
         height: 20vh;
         width: 80vw;
         background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .benched-pokemon{
+        margin: 1px;
+        width: 110px;
     }
 
     #start-btn{ 
@@ -554,8 +592,8 @@ progress::-webkit-progress-bar {
     #activePlayerPokemon{
         height: 100px;
         width: 150px;
-        top: 125px;
-        left: 35px;
+        top: 105px;
+        left: 40px;
         transform: scale(0.6);
     }
 

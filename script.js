@@ -396,35 +396,90 @@ const TypeChart = {
     }
 };
 
-let actionField ;
-let battleLog ;
+let pokeHealth;
+let pokeHealthPerc;
+let pcPokeHealth;
+let pcPokeHealthPerc;
+let hpbox; 
 
+let battleLog;
 let turn_counter = 1;
 
-let hpbox ;
+let activePokeData ={};
+const poke1Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
+const poke2Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
+const poke3Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
+const poke4Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
+const poke5Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
+const poke6Data ={
+    Move1:{},
+    Move2:{},
+    Move3:{},
+    Move4:{},
+};
 
-let pokeData = {};
-let pokeHealth ;
-let pokeHealthPerc ;
-let hover_pokeInfo ;
-let move1 = {};
-let move2 = {};
-let move3 = {};
-let move4 = {};
-
-let pcPokeData ={};
-let pcPokeHealth ;
-let pcPokeHealthPerc ;
-let hover_pcPokeInfo ;
-let pcMove1 = {};
-let pcMove2 = {};
-let pcMove3 = {};
-let pcMove4 = {};
-
-let moveBtn1;
-let moveBtn2;
-let moveBtn3;
-let moveBtn4;
+let activePcPokeData ={};
+const pcPoke1Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
+const pcPoke2Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
+const pcPoke3Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
+const pcPoke4Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
+const pcPoke5Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
+const pcPoke6Data = {
+    pcMove1:{},
+    pcMove2:{},
+    pcMove3:{},
+    pcMove4:{},
+};
 
 const screen = document.getElementById("screen");
 let btn = document.getElementById("start-btn");
@@ -437,29 +492,17 @@ let startGame = () => {
 
 btn.addEventListener("click", startGame);
 
-let showPcInfo = () => {
-    hover_pcPokeInfo.style.display = `block`;
-};
-
-let hidePcInfo = () => {
-    hover_pcPokeInfo.style.display = `none`;
-};
-let showInfo = () => {
-    hover_pokeInfo.style.display = `block`;
-};
-
-let hideInfo = () => {
-    hover_pokeInfo.style.display = `none`;
-};
-
 let GenerateBattleField = () => {
     let a = Math.floor(Math.random() * 17) + 1;
     screen.innerHTML = `
     <div id="battleField">
+    <audio autoplay="autoplay" loop="true">
+     <source src="Pokemon Music.mp3" />     
+    </audio>
     <div class="battleField" id="background" style="background-image: url(images/battleground${a}.jpg)">
             <div class="player1Box">
                 <div class="player1Info">
-                    <strong>TLE_Pheonix</strong>
+                    <center><strong>Pheonix</strong></center>
                     <div class="player1Img">
                     </div>
                     </div>
@@ -496,8 +539,6 @@ let GenerateBattleField = () => {
     document.getElementById("chat-btn").addEventListener("click",switch_display);
     document.getElementById("chat-btn").addEventListener("click",switch_display);
     battleLog = document.getElementById("battleRecord");
-    hover_pcPokeInfo = document.getElementById("hover-pcPokeInfo");
-    hover_pokeInfo = document.getElementById("hover-pokeInfo");
     document.getElementById("activePcPokemon").addEventListener("mouseover",showPcInfo);
     document.getElementById("activePlayerPokemon").addEventListener("mouseover",showInfo);
     document.getElementById("activePcPokemon").addEventListener("mouseout",hidePcInfo);
@@ -517,443 +558,332 @@ let switch_display = () => {
         document.getElementById("battleField").style.display = `block`;
         document.getElementById("chat-btn").innerHTML= `< chat`;
     }
-}
-
-let updateTurn = () => {
-    const turn_count = document.getElementById("turn-counter");
-    turn_count.innerHTML = `
-    Turn ${turn_counter}
-    `;
 };
 
-let updateInfoBox = () => {
-    document.getElementById("mini-info-box").innerHTML = `
-    <div>${pokeData.pokeName} <img src="images/gender-m.png"> L${pokeData.Level}</div>
-    <div><img class="pixelated" src="images/${pokeData.Type}.png"></div>
-    `;
-    document.getElementById("mini-info-box2").innerHTML = `
-    <div class="space" id="hover-hp-box">HP: ${pokeHealth.value}%(${pokeData.health}/${pokeData.Final_HP})</div>
-    <div class="space">Ability: ${pokeData.ability}</div>
-    <div class="space">Item: None</div>
-    <div class="space">Atk ${pokeData.Final_Attack} / Def ${pokeData.Final_Defence} / SpA ${pokeData.Final_SpecialAttack} / SpD ${pokeData.Final_SpecialDefence} / Spe ${pokeData.Final_Speed}</div>
-    `;
+let showPcInfo = () => {
+    document.getElementById("hover-pcPokeInfo").style.display = `block`;
 };
 
-let updatePcInfoBox = () => {
-    document.getElementById("mini-info-box-pc").innerHTML = `
-    <div>${pcPokeData.pcPokeName} <img src="images/gender-m.png"> L${pcPokeData.pcLevel}</div>
-    <div><img class="pixelated" src="images/${pcPokeData.pcType}.png"></div>
-    `;
-    document.getElementById("mini-info-box2-pc").innerHTML = `
-    <div class="space" id="hover-hp-box">HP: ${pcPokeHealth.value}%</div>
-    <div class="space">Possible abilities: ${pcPokeData.pcability}</div>
-    <div class="space">Spe: ${pcPokeData.pcFinal_Speed}</div>
-    `;
+let hidePcInfo = () => {
+    document.getElementById("hover-pcPokeInfo").style.display = `none`;
 };
 
-let goPokemonPlayer = (data) => {
-    const playerPoke = document.getElementById("activePlayerPokemon");
-    var Level = Math.floor((Math.random() * 15 ) + 75);
-    const IV = Math.floor(Math.random() * 31);
-    // for non animated images
-    // const imgSrc = data.sprites.back_default;
-    // for animated images
-    // const imgSrc = data.sprites.versions["generation-v"]["black-white"].animated.back_default;
-    const imgSrc = "https://play.pokemonshowdown.com/sprites/ani-back/"+data.name+".gif";
-    const pokeName = data.name[0].toUpperCase() + data.name.slice(1);
-    const Base_hp = data.stats[0].base_stat;
-    const Final_HP = Math.floor(0.01 * (2 * Base_hp + IV + Math.floor(0.25 * 88)) * Level) + Level + 10;
-    let health = Final_HP;
-    let healthPerc = 100;
-    const Base_Attack = data.stats[1].base_stat;
-    const Final_Attack = (Math.floor(0.01 * (2 * Base_Attack + IV + Math.floor(0.25 * 84)) * Level) + 5);
-    const Base_Defence = data.stats[2].base_stat;
-    const Final_Defence = (Math.floor(0.01 * (2 * Base_Defence + IV + Math.floor(0.25 * 84)) * Level) + 5);
-    const Base_Speed = data.stats[5].base_stat;
-    const Final_Speed = (Math.floor(0.01 * (2 * Base_Speed + IV + Math.floor(0.25 * 84)) * Level) + 5);
-    const Base_SpecialAttack = data.stats[3].base_stat;
-    const Final_SpecialAttack = (Math.floor(0.01 * (2 * Base_SpecialAttack + IV + Math.floor(0.25 * 84)) * Level) + 5);
-    const Base_SpecialDefence = data.stats[4].base_stat;
-    const Final_SpecialDefence = (Math.floor(0.01 * (2 * Base_SpecialDefence + IV + Math.floor(0.25 * 84)) * Level) + 5);
-    const ability = data.abilities[0].ability.name;
-    const type = data.types[0].type.name ;
-    pokeData.Level = Level;
-    pokeData.Type = type;
-    pokeData.IV = IV;
-    pokeData.pokeName = pokeName;
-    pokeData.Base_hp = Base_hp;
-    pokeData.Final_HP = Final_HP;
-    pokeData.health = health;
-    pokeData.healthPerc = healthPerc;
-    pokeData.Base_Attack = Base_Attack;
-    pokeData.Final_Attack = Final_Attack;
-    pokeData.Base_Defence =Base_Defence;
-    pokeData.Final_Defence =Final_Defence;
-    pokeData.Base_Speed = Base_Speed;
-    pokeData.Final_Speed = Final_Speed;
-    pokeData.Base_SpecialAttack = Base_SpecialAttack;
-    pokeData.Final_SpecialAttack = Final_SpecialAttack;
-    pokeData.Base_SpecialDefence = Base_SpecialDefence;
-    pokeData.Final_SpecialDefence = Final_SpecialDefence;
-    pokeData.ability = ability;
+let showInfo = () => {
+    document.getElementById("hover-pokeInfo").style.display = `block`;
+};
 
-    playerPoke.innerHTML=`
-    <p class="pokeName">${pokeData.pokeName} - L${pokeData.Level}</p>
+let hideInfo = () => {
+    document.getElementById("hover-pokeInfo").style.display = `none`;
+};
+
+let loadPokemons = () => {
+    const url = "https://pokeapi.co/api/v2/pokemon/";
+
+    for (let i = 1; i < 7 ; i++) 
+    {
+        let id = Math.floor(Math.random() * 890) + 1;
+        const finalUrl = url + id;
+         fetch(finalUrl)
+        .then((Response) => Response.json())
+        .then((data) => {
+            if (i==1) 
+            {
+                addAllPokemon(poke1Data,data);
+                goPokemonPlayer(1);
+            }
+            else if (i==2) 
+            {
+                addAllPokemon(poke2Data,data);
+            }
+            else if (i==3) 
+            {
+                addAllPokemon(poke3Data,data);
+            }
+            else if (i==4) 
+            {
+                addAllPokemon(poke4Data,data);
+            }
+            else if (i==5) 
+            {
+                addAllPokemon(poke5Data,data);
+            }
+            else if (i==6) 
+            {
+                addAllPokemon(poke6Data,data);
+            } 
+        });    
+    }
+
+    for (let i = 1; i < 7 ; i++) 
+    {
+        let idPc = Math.floor(Math.random() * 890) + 1;
+        const finalUrlPc = url + idPc;
+        fetch(finalUrlPc)
+        .then((Response) => Response.json())
+        .then((data1) => {
+            if (i==1) 
+            {
+                addAllPcPokemon(pcPoke1Data,data1);
+                goPokemonPc(1);
+            }
+            else if (i==2) 
+            {
+                addAllPcPokemon(pcPoke2Data,data1);
+            }
+            else if (i==3) 
+            {
+                addAllPcPokemon(pcPoke3Data,data1);
+            }
+            else if (i==4) 
+            {
+                addAllPcPokemon(pcPoke4Data,data1);
+            }
+            else if (i==5) 
+            {
+                addAllPcPokemon(pcPoke5Data,data1);
+            }
+            else if (i==6) 
+            {
+                addAllPcPokemon(pcPoke6Data,data1);
+            }
+        });    
+    }
+};
+
+let addAllPokemon = (pokevar,data) => {
+    pokevar.icon = data.sprites.versions["generation-vii"].icons.front_default;
+    pokevar.imgSrc = "https://play.pokemonshowdown.com/sprites/ani-back/"+data.name+".gif";
+    pokevar.Level = Math.floor((Math.random() * 15 ) + 75);
+    pokevar.Type =  data.types[0].type.name ;
+    pokevar.IV = Math.floor(Math.random() * 31);
+    pokevar.pokeName = data.name[0].toUpperCase() + data.name.slice(1);
+    pokevar.Base_hp = data.stats[0].base_stat;
+    pokevar.Final_HP = Math.floor(0.01 * (2 * pokevar.Base_hp + pokevar.IV + Math.floor(0.25 * 88)) * pokevar.Level) + pokevar.Level + 10;
+    pokevar.health = pokevar.Final_HP;
+    pokevar.healthPerc = 100;
+    pokevar.Base_Attack = data.stats[1].base_stat;
+    pokevar.Final_Attack = Math.floor(0.01 * (2 * pokevar.Base_Attack + pokevar.IV + Math.floor(0.25 * 84)) * pokevar.Level) + 5;
+    pokevar.Base_Defence = data.stats[2].base_stat;
+    pokevar.Final_Defence = Math.floor(0.01 * (2 * pokevar.Base_Defence + pokevar.IV + Math.floor(0.25 * 84)) * pokevar.Level) + 5;
+    pokevar.Base_Speed = data.stats[5].base_stat;
+    pokevar.Final_Speed = Math.floor(0.01 * (2 * pokevar.Base_Speed + pokevar.IV + Math.floor(0.25 * 84)) * pokevar.Level) + 5;
+    pokevar.Base_SpecialAttack = data.stats[3].base_stat;
+    pokevar.Final_SpecialAttack = Math.floor(0.01 * (2 * pokevar.Base_SpecialAttack + pokevar.IV + Math.floor(0.25 * 84)) * pokevar.Level) + 5;
+    pokevar.Base_SpecialDefence = data.stats[4].base_stat;
+    pokevar.Final_SpecialDefence = Math.floor(0.01 * (2 * pokevar.Base_SpecialDefence + pokevar.IV + Math.floor(0.25 * 84)) * pokevar.Level) + 5;
+    pokevar.ability = data.abilities[0].ability.name;
+
+    let n = data.moves.length - 1;
+    let m1 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove1 = data.moves[m1].move.url;
+    let m2 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove2 = data.moves[m2].move.url;
+    let m3 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove3 = data.moves[m3].move.url;
+    let m4 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove4 = data.moves[m4].move.url;
+
+    fetch(finalUrlMove1)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.Move1.name =  Data.name;
+        pokevar.Move1.type =  Data.type.name;
+        pokevar.Move1.power =  Data.power;
+        pokevar.Move1.pp =  Data.pp;
+        pokevar.Move1.accuracy =  Data.accuracy;
+        pokevar.Move1.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove2)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.Move2.name =  Data.name;
+        pokevar.Move2.type =  Data.type.name;
+        pokevar.Move2.power =  Data.power;
+        pokevar.Move2.pp =  Data.pp;
+        pokevar.Move2.accuracy =  Data.accuracy;
+        pokevar.Move2.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove3)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.Move3.name =  Data.name;
+        pokevar.Move3.type =  Data.type.name;
+        pokevar.Move3.power =  Data.power;
+        pokevar.Move3.pp =  Data.pp;
+        pokevar.Move3.accuracy =  Data.accuracy;
+        pokevar.Move3.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove4)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.Move4.name =  Data.name;
+        pokevar.Move4.type =  Data.type.name;
+        pokevar.Move4.power =  Data.power;
+        pokevar.Move4.pp =  Data.pp;
+        pokevar.Move4.accuracy =  Data.accuracy;
+        pokevar.Move4.class =  Data.damage_class;
+    });
+};
+
+let addAllPcPokemon = (pokevar,data) => {
+    pokevar.pcIcon = data.sprites.versions["generation-vii"].icons.front_default;
+    pokevar.pcImgSrc = "https://play.pokemonshowdown.com/sprites/ani/"+data.name+".gif";
+    pokevar.pcLevel = Math.floor((Math.random() * 15 ) + 75);
+    pokevar.pcType =  data.types[0].type.name ;
+    pokevar.pcIV = Math.floor(Math.random() * 31);
+    pokevar.pcPokeName = data.name[0].toUpperCase() + data.name.slice(1);
+    pokevar.pcBase_hp = data.stats[0].base_stat;
+    pokevar.pcFinal_HP = Math.floor(0.01 * (2 * pokevar.pcBase_hp + pokevar.pcIV + Math.floor(0.25 * 88)) * pokevar.pcLevel) + pokevar.pcLevel + 10;
+    pokevar.pchealth = pokevar.pcFinal_HP;
+    pokevar.pchealthPerc = 100;
+    pokevar.pcBase_Attack = data.stats[1].base_stat;
+    pokevar.pcFinal_Attack = Math.floor(0.01 * (2 * pokevar.pcBase_Attack + pokevar.pcIV + Math.floor(0.25 * 84)) * pokevar.pcLevel) + 5;
+    pokevar.pcBase_Defence = data.stats[2].base_stat;
+    pokevar.pcFinal_Defence = Math.floor(0.01 * (2 * pokevar.pcBase_Defence + pokevar.pcIV + Math.floor(0.25 * 84)) * pokevar.pcLevel) + 5;
+    pokevar.pcBase_Speed = data.stats[5].base_stat;
+    pokevar.pcFinal_Speed = Math.floor(0.01 * (2 * pokevar.pcBase_Speed + pokevar.pcIV + Math.floor(0.25 * 84)) * pokevar.pcLevel) + 5;
+    pokevar.pcBase_SpecialAttack = data.stats[3].base_stat;
+    pokevar.pcFinal_SpecialAttack = Math.floor(0.01 * (2 * pokevar.pcBase_SpecialAttack + pokevar.pcIV + Math.floor(0.25 * 84)) * pokevar.pcLevel) + 5;
+    pokevar.pcBase_SpecialDefence = data.stats[4].base_stat;
+    pokevar.pcFinal_SpecialDefence = Math.floor(0.01 * (2 * pokevar.pcBase_SpecialDefence + pokevar.pcIV + Math.floor(0.25 * 84)) * pokevar.pcLevel) + 5;
+    pokevar.pcability = data.abilities[0].ability.name;
+
+
+    let n = data.moves.length - 1;
+    let m1 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove1 = data.moves[m1].move.url;
+    let m2 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove2 = data.moves[m2].move.url;
+    let m3 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove3 = data.moves[m3].move.url;
+    let m4 = Math.floor(Math.random() * n) + 1;
+    const finalUrlMove4 = data.moves[m4].move.url;
+
+    fetch(finalUrlMove1)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.pcMove1.name =  Data.name;
+        pokevar.pcMove1.type =  Data.type.name;
+        pokevar.pcMove1.power =  Data.power;
+        pokevar.pcMove1.pp =  Data.pp;
+        pokevar.pcMove1.accuracy =  Data.accuracy;
+        pokevar.pcMove1.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove2)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.pcMove1.name =  Data.name;
+        pokevar.pcMove1.type =  Data.type.name;
+        pokevar.pcMove1.power =  Data.power;
+        pokevar.pcMove1.pp =  Data.pp;
+        pokevar.pcMove1.accuracy =  Data.accuracy;
+        pokevar.pcMove1.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove3)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.pcMove1.name =  Data.name;
+        pokevar.pcMove1.type =  Data.type.name;
+        pokevar.pcMove1.power =  Data.power;
+        pokevar.pcMove1.pp =  Data.pp;
+        pokevar.pcMove1.accuracy =  Data.accuracy;
+        pokevar.pcMove1.class =  Data.damage_class;
+    });
+        
+    fetch(finalUrlMove4)
+    .then((Response) => Response.json())
+    .then((Data) => {
+        pokevar.pcMove1.name =  Data.name;
+        pokevar.pcMove1.type =  Data.type.name;
+        pokevar.pcMove1.power =  Data.power;
+        pokevar.pcMove1.pp =  Data.pp;
+        pokevar.pcMove1.accuracy =  Data.accuracy;
+        pokevar.pcMove1.class =  Data.damage_class;
+    });
+};
+
+let goPokemonPlayer = (n) => {
+    switch (n) {
+        case 1:
+            activePokeData = poke1Data;
+            break;
+        case 2:
+            activePokeData = poke2Data;
+            break;
+        case 3:
+            activePokeData = poke3Data;
+            break;
+        case 4:
+            activePokeData = poke4Data;
+            break;
+        case 5:
+            activePokeData = poke5Data;
+            break;
+        case 6:
+            activePokeData = poke6Data;
+            break;
+    }
+
+    document.getElementById("activePlayerPokemon").innerHTML=`
+    <p class="pokeName">${activePokeData.pokeName} - L${activePokeData.Level}</p>
     <div class ="health">
-        <progress id="health1" value="100" max="100"></progress>
-        <span id="health1perc">100%</span>
+        <progress id="health1" value="${activePokeData.healthPerc}" max="100"></progress>
+        <span id="health1perc">${activePokeData.healthPerc}%</span>
     </div>
-    <img id="player-poke-Img" src="${imgSrc}" >
+    <img id="player-poke-Img" src="${activePokeData.imgSrc}" >
+    <audio autoplay="autoplay">
+     <source src="http://play.pokemonshowdown.com/audio/cries/${activePokeData.pokeName.toLowerCase()}.mp3"/>     
+    </audio>
     `;
 
     pokeHealth = document.getElementById("health1");
     pokeHealthPerc = document.getElementById("health1perc");
 
-    GenerateActionField(pokeData);
     updateInfoBox();
-    moveSelector(data);
+    GenerateActionField(activePokeData);
 };
 
-let goPokemonPc = (data1) => {
-    const pcPoke = document.getElementById("activePcPokemon");
-    const pcLevel = Math.floor((Math.random() * 15 ) + 75);
-    const pcIV = Math.floor(Math.random() * 31);
-    // for non animated images
-    // const pcImgSrc = data1.sprites.front_default;
-    // for animated images
-    // const pcImgSrc = data1.sprites.versions["generation-v"]["black-white"].animated.front_default;
-    const pcImgSrc = "https://play.pokemonshowdown.com/sprites/ani/"+data1.name+".gif";
-    const pcPokeName = data1.name[0].toUpperCase() + data1.name.slice(1);
-    const pcBase_hp = data1.stats[0].base_stat;
-    const pcFinal_HP = Math.floor(0.01 * (2 * pcBase_hp + pcIV + Math.floor(0.25 * 88)) * pcLevel) + pcLevel + 10;
-    let pchealth = pcFinal_HP;
-    let pchealthPerc = 100;
-    const pcBase_Attack = data1.stats[1].base_stat;
-    const pcFinal_Attack = (Math.floor(0.01 * (2 * pcBase_Attack + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
-    const pcBase_Defence = data1.stats[2].base_stat;
-    const pcFinal_Defence = (Math.floor(0.01 * (2 * pcBase_Defence + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
-    const pcBase_Speed = data1.stats[5].base_stat;
-    const pcFinal_Speed = (Math.floor(0.01 * (2 * pcBase_Speed + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
-    const pcBase_SpecialAttack = data1.stats[3].base_stat;
-    const pcFinal_SpecialAttack = (Math.floor(0.01 * (2 * pcBase_SpecialAttack + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
-    const pcBase_SpecialDefence = data1.stats[4].base_stat;
-    const pcFinal_SpecialDefence = (Math.floor(0.01 * (2 * pcBase_SpecialDefence + pcIV + Math.floor(0.25 * 84)) * pcLevel) + 5);
-    const pcability = data1.abilities[0].ability.name;
-    const pcType = data1.types[0].type.name ;
-    pcPokeData.pcLevel = pcLevel;
-    pcPokeData.pcType = pcType;
-    pcPokeData.pcIV = pcIV;
-    pcPokeData.pcPokeName = pcPokeName;
-    pcPokeData.pcBase_hp = pcBase_hp;
-    pcPokeData.pcFinal_HP = pcFinal_HP;
-    pcPokeData.pchealth = pchealth;
-    pcPokeData.pchealthPerc = pchealthPerc;
-    pcPokeData.pcBase_Attack = pcBase_Attack;
-    pcPokeData.pcFinal_Attack = pcFinal_Attack;
-    pcPokeData.pcBase_Defence =pcBase_Defence;
-    pcPokeData.pcFinal_Defence =pcFinal_Defence;
-    pcPokeData.pcBase_Speed = pcBase_Speed;
-    pcPokeData.pcFinal_Speed = pcFinal_Speed;
-    pcPokeData.pcBase_SpecialAttack = pcBase_SpecialAttack;
-    pcPokeData.pcFinal_SpecialAttack = pcFinal_SpecialAttack;
-    pcPokeData.pcBase_SpecialDefence = pcBase_SpecialDefence;
-    pcPokeData.pcFinal_SpecialDefence = pcFinal_SpecialDefence;
-    pcPokeData.pcability = pcability;
+let goPokemonPc = (n) => {
+    switch (n) {
+        case 1:
+            activePcPokeData = pcPoke1Data;
+            break;
+        case 2:
+            activePcPokeData = pcPoke2Data;
+            break;
+        case 3:
+            activePcPokeData = pcPoke3Data;
+            break;
+        case 4:
+            activePcPokeData = pcPoke4Data;
+            break;
+        case 5:
+            activePcPokeData = pcPoke5Data;
+            break;
+        case 6:
+            activePcPokeData = pcPoke6Data;
+            break;
+    }
 
-    pcPoke.innerHTML=`
-    <p class="pokeName">${pcPokeData.pcPokeName} - L${pcPokeData.pcLevel}</p>
-    <div class ="health"><span id="healthperc">100%</span><progress id="health" value="${pcPokeData.pchealth}" max="100"></progress></div>
-    <img id="pc-poke-Img" src="${pcImgSrc}" >
+    document.getElementById("activePcPokemon").innerHTML=`
+    <p class="pokeName">${activePcPokeData.pcPokeName} - L${activePcPokeData.pcLevel}</p>
+    <div class ="health"><span id="healthperc">100%</span><progress id="health" value="${activePcPokeData.pchealth}" max="100"></progress></div>
+    <img id="pc-poke-Img" src="${activePcPokeData.pcImgSrc}" >
     `;
-    // style="height: 120px; width: 120px;"
     pcPokeHealth = document.getElementById("health");
     pcPokeHealthPerc =document.getElementById("healthperc");
 
     updatePcInfoBox();
-    pcMoveSelector(data1);
-};
-
-let moveSelector = (data) => {
-    let n = data.moves.length;
-    let m1 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove1 = data.moves[m1].move.url;
-    let m2 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove2 = data.moves[m2].move.url;
-    let m3 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove3 = data.moves[m3].move.url;
-    let m4 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove4 = data.moves[m4].move.url;
-
-    fetch(finalUrlMove1)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        move1.name = Data.name;
-        move1.type = Data.type.name;
-        move1.power = Data.power;
-        move1.pp = Data.pp;
-        move1.accuracy = Data.accuracy;
-        move1.class = Data.damage_class.name;
-        designMove1(Data);
-        });
-        
-    fetch(finalUrlMove2)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        move2.name = Data.name;
-        move2.type = Data.type.name;
-        move2.power = Data.power;
-        move2.pp = Data.pp;
-        move2.accuracy = Data.accuracy;
-        move2.class = Data.damage_class.name;
-        designMove2(Data);
-        });
-        
-    fetch(finalUrlMove3)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        move3.name = Data.name;
-        move3.type = Data.type.name;
-        move3.power = Data.power;
-        move3.pp = Data.pp;
-        move3.accuracy = Data.accuracy;
-        move3.class = Data.damage_class.name;
-        designMove3(Data);
-        });
-        
-    fetch(finalUrlMove4)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        move4.name = Data.name;
-        move4.type = Data.type.name;
-        move4.power = Data.power;
-        move4.pp = Data.pp;
-        move4.accuracy = Data.accuracy;
-        move4.class = Data.damage_class.name;
-        designMove4(Data);
-        });
-};
-
-let pcMoveSelector = (data) => {
-    let n = data.moves.length;
-    let m1 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove1 = data.moves[m1].move.url;
-    let m2 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove2 = data.moves[m2].move.url;
-    let m3 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove3 = data.moves[m3].move.url;
-    let m4 = Math.floor(Math.random() * n) + 1;
-    const finalUrlMove4 = data.moves[m4].move.url;
-
-    fetch(finalUrlMove1)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        pcMove1.name = Data.name;
-        pcMove1.type = Data.type.name;
-        pcMove1.power = Data.power;
-        pcMove1.pp = Data.pp;
-        pcMove1.accuracy = Data.accuracy;
-        pcMove1.class = Data.damage_class.name;
-        });
-        
-    fetch(finalUrlMove2)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        pcMove2.name = Data.name;
-        pcMove2.type = Data.type.name;
-        pcMove2.power = Data.power;
-        pcMove2.pp = Data.pp;
-        pcMove2.accuracy = Data.accuracy;
-        pcMove2.class = Data.damage_class.name;
-        });
-        
-    fetch(finalUrlMove3)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        pcMove3.name = Data.name;
-        pcMove3.type = Data.type.name;
-        pcMove3.power = Data.power;
-        pcMove3.pp = Data.pp;
-        pcMove3.accuracy = Data.accuracy;
-        pcMove3.class = Data.damage_class.name;
-        });
-        
-    fetch(finalUrlMove4)
-    .then((Response) => Response.json())
-    .then((Data) => {
-        pcMove4.name = Data.name;
-        pcMove4.type = Data.type.name;
-        pcMove4.power = Data.power;
-        pcMove4.pp = Data.pp;
-        pcMove4.accuracy = Data.accuracy;
-        pcMove4.class = Data.damage_class.name;
-        });
-};
-
-let designMove1 = (move1Data) => {
-    const btn1 = document.getElementById("move1");
-    const themeColor1 = typeColor[move1Data.type.name]; 
-    let leftpp1 = move1Data.pp;
-    btn1.innerHTML = `
-    <p>${move1Data.name}</p>
-    <small>${move1Data.type.name}</small>
-    <small class="pp">pp ${leftpp1}/${move1Data.pp}</small>
-    `;
-
-    btn1.style.background = `linear-gradient(to top, ${themeColor1}, white)`;
-    btn1.style.borderColor = `${themeColor1}`;
-    updateMoveinfo(1);
-};
-
-let designMove2 = (move2Data) => {
-    const btn2 = document.getElementById("move2");
-    const themeColor2 = typeColor[move2Data.type.name]; 
-    let leftpp2 = move2Data.pp;
-    btn2.innerHTML = `
-    <p>${move2Data.name}</p>
-    <small>${move2Data.type.name}</small>
-    <small class="pp">pp ${leftpp2}/${move2Data.pp}</small>
-    `;
-
-    btn2.style.background = `linear-gradient(to top, ${themeColor2}, white)`;
-    btn2.style.borderColor = `${themeColor2}`;
-    updateMoveinfo(2);
-};
-
-let designMove3 = (move3Data) => {
-    const btn3 = document.getElementById("move3");
-    const themeColor3 = typeColor[move3Data.type.name]; 
-    let leftpp3 = move3Data.pp;
-    btn3.innerHTML = `
-    <p>${move3Data.name}</p>
-    <small>${move3Data.type.name}</small>
-    <small class="pp">pp ${leftpp3}/${move3Data.pp}</small>
-    `;
-
-    btn3.style.background = `linear-gradient(to top, ${themeColor3}, white)`;
-    btn3.style.borderColor = `${themeColor3}`;
-    updateMoveinfo(3);
-};
-
-let designMove4 = (move4Data) => {
-    const btn4 = document.getElementById("move4");
-    const themeColor4 = typeColor[move4Data.type.name];
-    let leftpp = move4Data.pp; 
-    btn4.innerHTML = `
-    <p>${move4Data.name}</p>
-    <small>${move4Data.type.name}</small>
-    <small class="pp">pp ${leftpp}/${move4Data.pp}</small>
-    `;
-
-    btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
-    btn4.style.borderColor = `${themeColor4}`;
-    updateMoveinfo(4);
-};
-
-let reDesignMove1 = (move1Data) => {
-    const btn1 = document.getElementById("move1");
-    const themeColor1 = typeColor[move1Data.type]; 
-    let leftpp1 = move1Data.pp;
-    btn1.innerHTML = `
-    <p>${move1Data.name}</p>
-    <small>${move1Data.type}</small>
-    <small class="pp">pp ${leftpp1}/${move1Data.pp}</small>
-    `;
-
-    btn1.style.background = `linear-gradient(to top, ${themeColor1}, white)`;
-    btn1.style.borderColor = `${themeColor1}`;
-};
-
-let reDesignMove2 = (move2Data) => {
-    const btn2 = document.getElementById("move2");
-    const themeColor2 = typeColor[move2Data.type]; 
-    let leftpp2 = move2Data.pp;
-    btn2.innerHTML = `
-    <p>${move2Data.name}</p>
-    <small>${move2Data.type}</small>
-    <small class="pp">pp ${leftpp2}/${move2Data.pp}</small>
-    `;
-
-    btn2.style.background = `linear-gradient(to top, ${themeColor2}, white)`;
-    btn2.style.borderColor = `${themeColor2}`;
-};
-
-let reDesignMove3 = (move3Data) => {
-    const btn3 = document.getElementById("move3");
-    const themeColor3 = typeColor[move3Data.type]; 
-    let leftpp3 = move3Data.pp;
-    btn3.innerHTML = `
-    <p>${move3Data.name}</p>
-    <small>${move3Data.type}</small>
-    <small class="pp">pp ${leftpp3}/${move3Data.pp}</small>
-    `;
-
-    btn3.style.background = `linear-gradient(to top, ${themeColor3}, white)`;
-    btn3.style.borderColor = `${themeColor3}`;
-};
-
-let reDesignMove4 = (move4Data) => {
-    const btn4 = document.getElementById("move4");
-    const themeColor4 = typeColor[move4Data.type];
-    let leftpp = move4Data.pp; 
-    btn4.innerHTML = `
-    <p>${move4Data.name}</p>
-    <small>${move4Data.type}</small>
-    <small class="pp">pp ${leftpp}/${move4Data.pp}</small>
-    `;
-
-    btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
-    btn4.style.borderColor = `${themeColor4}`;
-};
-
-let showMoveInfo = (id) => {
-    document.getElementById(id).style.display = `block`;
-};
-
-let hideMoveInfo = (id) => {
-    document.getElementById(id).style.display = `none`;
-};
-
-let updateMoveinfo = (id) => {
-    let m ;
-    let d ;
-    switch (id) {
-        case 1:
-            m = move1;
-            d = "hover-move1";
-            break;
-    
-        case 2:
-            m = move2;
-            d = "hover-move2";
-            break;
-    
-        case 3:
-            m = move3;
-            d = "hover-move3";
-            break;
-    
-        case 4:
-            m = move4;
-            d = "hover-move4";
-            break;
-    }
-    document.getElementById(d).innerHTML = `
-    <div class="mini-info-box">
-        <div>${m.name}</div>
-        <div><img class="pixelated" src="images/${m.type}.png"></div>
-    </div>
-    <div class="mini-info-box-move">
-        <div>Base power: ${m.power}</div>
-        <div>Accuracy: ${m.accuracy}%</div>
-    </div>
-    <div>Effect: Null</div>
-    
-    `;
 };
 
 let GenerateActionField = (pokeData) => {
-    actionField = document.getElementById("actionField");
-    actionField.innerHTML=`
+    setTimeout(function(){
+    document.getElementById("actionField").innerHTML=`
     <div class="action-msg">
         <span>What will <b>${pokeData.pokeName}</b> do?</span>
         <div class="hpBox" id="hpBox">
@@ -979,8 +909,47 @@ let GenerateActionField = (pokeData) => {
             </div>
         </div>
     </div>
+    <div class="switchBox">
+        <div class="switch-text">Switch</div>
+        <div class="move-list">
+            <button class="benched-pokemon" id="benched-pokemon1">
+                <img src="${poke1Data.icon}">
+                <span class="small-pokename">${poke1Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke1Data.healthPerc}" max="100"></progress>
+            </button>
+            <button class="benched-pokemon" id="benched-pokemon2">
+                <img src="${poke2Data.icon}">
+                <span class="small-pokename">${poke2Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke2Data.healthPerc}" max="100"></progress>
+            </button>
+            <button class="benched-pokemon" id="benched-pokemon3">
+                <img src="${poke3Data.icon}">    
+                <span class="small-pokename">${poke3Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke3Data.healthPerc}" max="100"></progress>
+            </button>
+            <button class="benched-pokemon" id="benched-pokemon4">
+                <img src="${poke4Data.icon}">    
+                <span class="small-pokename">${poke4Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke4Data.healthPerc}" max="100"></progress>
+            </button>
+            <button class="benched-pokemon" id="benched-pokemon5">
+                <img src="${poke5Data.icon}">    
+                <span class="small-pokename">${poke5Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke5Data.healthPerc}" max="100"></progress>
+            </button>
+            <button class="benched-pokemon" id="benched-pokemon6">
+                <img src="${poke6Data.icon}">
+                <span class="small-pokename">${poke6Data.pokeName}</span>
+                <progress class="mini-health" id="health2" value="${poke6Data.healthPerc}" max="100"></progress>
+            </button>
+        </div>
+    </div>
     `;
     hpbox = document.getElementById("hpBox");
+    designMove1(activePokeData);
+    designMove2(activePokeData);
+    designMove3(activePokeData);
+    designMove4(activePokeData);
     document.getElementById("move1").addEventListener("mouseover",function () { showMoveInfo("hover-move1");});
     document.getElementById("move1").addEventListener("mouseout",function () { hideMoveInfo("hover-move1");});
     document.getElementById("move2").addEventListener("mouseover",function () { showMoveInfo("hover-move2");});
@@ -990,119 +959,199 @@ let GenerateActionField = (pokeData) => {
     document.getElementById("move4").addEventListener("mouseover",function () { showMoveInfo("hover-move4");});
     document.getElementById("move4").addEventListener("mouseout",function () { hideMoveInfo("hover-move4");});
     addEventListen();
+    }, 500);
+};
 
+let updateInfoBox = () => {
+    document.getElementById("mini-info-box").innerHTML = `
+    <div>${activePokeData.pokeName} <img src="images/gender-m.png"> L${activePokeData.Level}</div>
+    <div><img class="pixelated" src="images/${activePokeData.Type}.png"></div>
+    `;
+    document.getElementById("mini-info-box2").innerHTML = `
+    <div class="space" id="hover-hp-box">HP: ${pokeHealth.value}%(${activePokeData.health}/${activePokeData.Final_HP})</div>
+    <div class="space">Ability: ${activePokeData.ability}</div>
+    <div class="space">Item: None</div>
+    <div class="space">Atk ${activePokeData.Final_Attack} / Def ${activePokeData.Final_Defence} / SpA ${activePokeData.Final_SpecialAttack} / SpD ${activePokeData.Final_SpecialDefence} / Spe ${activePokeData.Final_Speed}</div>
+    `;
+};
+
+let updatePcInfoBox = () => {
+    document.getElementById("mini-info-box-pc").innerHTML = `
+    <div>${activePcPokeData.pcPokeName} <img src="images/gender-m.png"> L${activePcPokeData.pcLevel}</div>
+    <div><img class="pixelated" src="images/${activePcPokeData.pcType}.png"></div>
+    `;
+    document.getElementById("mini-info-box2-pc").innerHTML = `
+    <div class="space" id="hover-hp-box">HP: ${pcPokeHealth.value}%</div>
+    <div class="space">Possible abilities: ${activePcPokeData.pcability}</div>
+    <div class="space">Spe: ${activePcPokeData.pcFinal_Speed}</div>
+    `;
 };
 
 let addEventListen = () => {
-    moveBtn1 = document.getElementById("move1");
-    moveBtn1.addEventListener("click", function () { Attack(1);});
-    moveBtn2 = document.getElementById("move2");
-    moveBtn2.addEventListener("click", function () { Attack(2);});
-    moveBtn3 = document.getElementById("move3");
-    moveBtn3.addEventListener("click", function () { Attack(3);});
-    moveBtn4 = document.getElementById("move4");
-    moveBtn4.addEventListener("click", function () { Attack(4);});
+    document.getElementById("move1").addEventListener("click", function () { Attack(1);});
+    document.getElementById("move2").addEventListener("click", function () { Attack(2);});
+    document.getElementById("move3").addEventListener("click", function () { Attack(3);});
+    document.getElementById("move4").addEventListener("click", function () { Attack(4);});
+    document.getElementById("benched-pokemon1").addEventListener("click", function () {switchPoke(1)});
+    document.getElementById("benched-pokemon2").addEventListener("click", function () {switchPoke(2)});
+    document.getElementById("benched-pokemon3").addEventListener("click", function () {switchPoke(3)});
+    document.getElementById("benched-pokemon4").addEventListener("click", function () {switchPoke(4)});
+    document.getElementById("benched-pokemon5").addEventListener("click", function () {switchPoke(5)});
+    document.getElementById("benched-pokemon6").addEventListener("click", function () {switchPoke(6)});
 };
 
-let blockActionField = () => {
-    actionField.innerHTML=`
-    <p>Waiting for next turn...</p>
-    `;
-};
-
-let updateBattlelog = () => {
-    battleLog.innerHTML = battleLog.innerHTML + `
-    <div class="turn-record">Turn ${turn_counter}</div>
-    `;
-};
-
-let unblockActionField = (pokeData) => {
-    actionField.innerHTML=`
-    <div class="action-msg">
-        <span>What will <b>${pokeData.pokeName}</b> do?</span>
-        <div class="hpBox">
-            HP ${pokeData.health}/${pokeData.Final_HP}
-        </div>
-    </div>
-    <div class="Attack-box">
-        <div class="attack-text">Attack</div>
-        <div class="attack-menu">
-            <div class="move-list">
-                <div class="hover-move" id="hover-move1"></div>
-                <div class="hover-move" id="hover-move2"></div>
-                <div class="hover-move" id="hover-move3"></div>
-                <div class="hover-move" id="hover-move4"></div>
-                <button class="move" id="move1">
-                </button>
-                <button class="move" id="move2">
-                </button>
-                <button class="move" id="move3">
-                </button>
-                <button class="move" id="move4">
-                </button>
-            </div>
-        </div>
-    </div>
-    `;
-    reDesignMove1(move1);
-    reDesignMove2(move2);
-    reDesignMove3(move3);
-    reDesignMove4(move4);
-    updateMoveinfo(1);
-    updateMoveinfo(2);
-    updateMoveinfo(3);
-    updateMoveinfo(4);
-    document.getElementById("move1").addEventListener("mouseover",function () { showMoveInfo("hover-move1");});
-    document.getElementById("move1").addEventListener("mouseout",function () { hideMoveInfo("hover-move1");});
-    document.getElementById("move2").addEventListener("mouseover",function () { showMoveInfo("hover-move2");});
-    document.getElementById("move2").addEventListener("mouseout",function () { hideMoveInfo("hover-move2");});
-    document.getElementById("move3").addEventListener("mouseover",function () { showMoveInfo("hover-move3");});
-    document.getElementById("move3").addEventListener("mouseout",function () { hideMoveInfo("hover-move3");});
-    document.getElementById("move4").addEventListener("mouseover",function () { showMoveInfo("hover-move4");});
-    document.getElementById("move4").addEventListener("mouseout",function () { hideMoveInfo("hover-move4");});
-    addEventListen();
-};
-
-let reload = () => {
-    screen.innerHTML = `
-    <div class="container" id="container">
-        <div class="back"><button id="start-btn">Battle!<p class="white">Play with pc</p></button></div>
-    </div>
-    `;
-    btn = document.getElementById("start-btn");
-    btn.addEventListener("click", startGame);
-};
-
-let declareWinner = (Name,pokename) => {
-    actionField.innerHTML = `
-    <center><strong>${Name} Won The Battle</strong></center>
-    <div class="afterMatchMenu">
-        <button class="afterMatchBtn" id="rematch">Rematch</button>
-        <button class="afterMatchBtn" id="mainMenu">Main menu</button>
-    </div>
-    `;
-    battleLog.innerHTML = battleLog.innerHTML + `
-    <div>${pokename} Fainted!</div>
-    `;
-    document.getElementById("rematch").addEventListener("click",startGame);
-    document.getElementById("mainMenu").addEventListener("click",reload);
-    throw 'Game End';
-};
-
-let winnerCheck = () => {
-    if (pcPokeHealth.value == 0)
-    {
-        declareWinner("TLE_Pheonix",pcPokeData.pcPokeName);
+let switchPoke = (n) => {
+    switch (n) {
+        case 1:
+            activePokeData = poke1Data;
+            goPokemonPlayer(1);
+            blockActionField();
+            break;
+        case 2:
+            activePokeData = poke2Data;
+            goPokemonPlayer(2);
+            blockActionField();
+            break;
+        case 3:
+            activePokeData = poke3Data;
+            goPokemonPlayer(3);
+            blockActionField();
+            break;
+        case 4:
+            activePokeData = poke4Data;
+            goPokemonPlayer(4);
+            blockActionField();
+            break;
+        case 5:
+            activePokeData = poke5Data;
+            goPokemonPlayer(5);
+            blockActionField();
+            break;
+        case 6:
+            activePokeData = poke6Data;
+            goPokemonPlayer(6);
+            blockActionField();
+            break;
     }
-    if (pokeHealth.value == 0)
-    {
-        declareWinner("PC",pokeData.pokeName);
+    
+};
+
+let showMoveInfo = (id) => {
+    document.getElementById(id).style.display = `block`;
+};
+
+let hideMoveInfo = (id) => {
+    document.getElementById(id).style.display = `none`;
+};
+
+let designMove1 = (activePokeData) => {
+    setTimeout(function(){
+        const btn1 = document.getElementById("move1");
+        const themeColor1 = typeColor[activePokeData.Move1.type]; 
+        let leftpp1 = activePokeData.Move1.pp;
+        btn1.innerHTML = `
+        <p>${activePokeData.Move1.name}</p>
+        <small>${activePokeData.Move1.type}</small>
+        <small class="pp">pp ${leftpp1}/${activePokeData.Move1.pp}</small>
+        `;
+
+        btn1.style.background = `linear-gradient(to top, ${themeColor1}, white)`;
+        btn1.style.borderColor = `${themeColor1}`; 
+        updateMoveinfo(1);
+    }, 500);
+};
+
+let designMove2 = (activePokeData) => {
+    setTimeout(function(){
+        const btn2 = document.getElementById("move2");
+        const themeColor2 = typeColor[activePokeData.Move2.type]; 
+        let leftpp2 = activePokeData.Move2.pp;
+        btn2.innerHTML = `
+        <p>${activePokeData.Move2.name}</p>
+        <small>${activePokeData.Move2.type}</small>
+        <small class="pp">pp ${leftpp2}/${activePokeData.Move2.pp}</small>
+        `;
+
+        btn2.style.background = `linear-gradient(to top, ${themeColor2}, white)`;
+        btn2.style.borderColor = `${themeColor2}`; 
+        updateMoveinfo(2);
+    }, 500);
+};
+
+let designMove3 = (activePokeData) => {
+    setTimeout(function(){
+        const btn3 = document.getElementById("move3");
+        const themeColor3 = typeColor[activePokeData.Move3.type]; 
+        let leftpp3 = activePokeData.Move3.pp;
+        btn3.innerHTML = `
+        <p>${activePokeData.Move3.name}</p>
+        <small>${activePokeData.Move3.type}</small>
+        <small class="pp">pp ${leftpp3}/${activePokeData.Move3.pp}</small>
+        `;
+
+        btn3.style.background = `linear-gradient(to top, ${themeColor3}, white)`;
+        btn3.style.borderColor = `${themeColor3}`; 
+        updateMoveinfo(3);
+    }, 500);
+};
+
+let designMove4 = (activePokeData) => {
+    setTimeout(function(){
+        const btn4 = document.getElementById("move4");
+        const themeColor4 = typeColor[activePokeData.Move4.type]; 
+        let leftpp4 = activePokeData.Move4.pp;
+        btn4.innerHTML = `
+        <p>${activePokeData.Move4.name}</p>
+        <small>${activePokeData.Move4.type}</small>
+        <small class="pp">pp ${leftpp4}/${activePokeData.Move4.pp}</small>
+        `;
+
+        btn4.style.background = `linear-gradient(to top, ${themeColor4}, white)`;
+        btn4.style.borderColor = `${themeColor4}`; 
+        updateMoveinfo(4);
+    }, 500);
+};
+
+let updateMoveinfo = (id) => {
+    let m ;
+    let d ;
+    switch (id) {
+        case 1:
+            m = activePokeData.Move1;
+            d = "hover-move1";
+            break;
+    
+        case 2:
+            m = activePokeData.Move2;
+            d = "hover-move2";
+            break;
+    
+        case 3:
+            m = activePokeData.Move3;
+            d = "hover-move3";
+            break;
+    
+        case 4:
+            m = activePokeData.Move4;
+            d = "hover-move4";
+            break;
     }
+    document.getElementById(d).innerHTML = `
+    <div class="mini-info-box">
+        <div>${m.name}</div>
+        <div><img class="pixelated" src="images/${m.type}.png"></div>
+    </div>
+    <div class="mini-info-box-move">
+        <div>Base power: ${m.power}</div>
+        <div>Accuracy: ${m.accuracy}%</div>
+    </div>
+    <div>Effect: Null</div>
+    `;
 };
 
 let effectivenessChecker = (mov) => {
     let a = 1;
-    let b = TypeChart[pcPokeData.pcType][mov.type];
+    let b = TypeChart[activePcPokeData.pcType][mov.type];
 
     if(b == 1)
     {
@@ -1121,7 +1170,7 @@ let effectivenessChecker = (mov) => {
 
 let pcEffectivenessChecker = (mov) => {
     let a = 1;
-    let b = TypeChart[pokeData.Type][mov.type];
+    let b = TypeChart[activePokeData.Type][mov.type];
 
     if(b == 1)
     {
@@ -1138,7 +1187,38 @@ let pcEffectivenessChecker = (mov) => {
     return a;
 };
 
-let Turn = (playerMove, pcMove) => {
+let updateBattlelog = () => {
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div class="turn-record">Turn ${turn_counter}</div>
+    `;
+};
+
+let updateTurn = () => {
+    const turn_count = document.getElementById("turn-counter");
+    turn_count.innerHTML = `
+    Turn ${turn_counter}
+    `;
+};
+
+let declareWinner = (Name,pokename) => {
+    actionField.innerHTML = `
+    <center><strong>${Name} Won The Battle</strong></center>
+    <div class="afterMatchMenu">
+        <button class="afterMatchBtn" id="rematch">Rematch</button>
+        <button class="afterMatchBtn" id="mainMenu">Main menu</button>
+    </div>
+    `;
+    battleLog.innerHTML = battleLog.innerHTML + `
+    <div>${pokename} Fainted!</div>
+    `;
+    document.getElementById("rematch").addEventListener("click",startGame);
+    document.getElementById("mainMenu").addEventListener("click",reload);
+    throw 'Game End';
+};
+
+let attackTurn = (playerMove, pcMove) => {
+    console.log(activePokeData);
+    console.log(activePcPokeData);
     winnerCheck();
     let plyAtt ;
     let plyDef ;
@@ -1155,24 +1235,24 @@ let Turn = (playerMove, pcMove) => {
 
     if (playerMove.damage_class == "special")
     {
-        plyAtt = pokeData.Final_SpecialAttack;
-        pcDef = pcPokeData.pcFinal_SpecialDefence;
+        plyAtt = activePokeData.Final_SpecialAttack;
+        pcDef = activePcPokeData.pcFinal_SpecialDefence;
     }
     else
     {
-        plyAtt = pokeData.Final_Attack;
-        pcDef = pcPokeData.pcFinal_Defence;
+        plyAtt = activePokeData.Final_Attack;
+        pcDef = activePcPokeData.pcFinal_Defence;
     }
 
     if (pcMove.damage_class == "special")
     {
-        pcAtt = pcPokeData.pcFinal_SpecialAttack;
-        plyDef = pokeData.Final_SpecialDefence;
+        pcAtt = activePcPokeData.pcFinal_SpecialAttack;
+        plyDef = activePokeData.Final_SpecialDefence;
     }
     else
     {
-        pcAtt = pcPokeData.pcFinal_Attack;
-        plyDef = pokeData.Final_Defence;
+        pcAtt = activePcPokeData.pcFinal_Attack;
+        plyDef = activePokeData.Final_Defence;
     }
 
     let type = effectivenessChecker(playerMove);
@@ -1195,18 +1275,18 @@ let Turn = (playerMove, pcMove) => {
     let random = (Math.floor((Math.random() * 15) + 85))/100;
     let randomPc = (Math.floor((Math.random() * 15) + 85))/100;
 
-    let damage = Math.floor(((((((2*pokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2)*critical*random*type);
-    let pcDamage = Math.floor(((((((2*pcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2)*criticalPc*randomPc*pcType);
+    let damage = Math.floor(((((((2*activePokeData.Level)/5)+2)*playerMove.power*(plyAtt/pcDef))/50)+2)*critical*random*type);
+    let pcDamage = Math.floor(((((((2*activePcPokeData.pcLevel)/5)+2)*pcMove.power*(pcAtt/plyDef))/50)+2)*criticalPc*randomPc*pcType);
 
     let damageperc ;
-    damageperc = Math.floor((damage/pcPokeData.pcFinal_HP)*100);
+    damageperc = Math.floor((damage/activePcPokeData.pcFinal_HP)*100);
     if(damageperc > pcPokeHealth.value)
     {
         damageperc = pcPokeHealth.value;
     }
     let pcDamageperc ;
 
-    pcDamageperc = Math.floor((pcDamage/pokeData.Final_HP)*100);
+    pcDamageperc = Math.floor((pcDamage/activePokeData.Final_HP)*100);
     if(pcDamageperc > pokeHealth.value)
     {
         pcDamageperc = pokeHealth.value;
@@ -1214,12 +1294,14 @@ let Turn = (playerMove, pcMove) => {
 
     updateBattlelog();
 
-    if (pcPokeData.pcFinal_Speed > pokeData.Final_Speed)
+    if (activePcPokeData.pcFinal_Speed > activePokeData.Final_Speed)
     {
         pokeHealth.value -= pcDamageperc;
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
+        activePokeData.healthPerc -=pcDamageperc;
+
         updateInfoBox();
 
         if (criticalPc == 1.5)
@@ -1227,31 +1309,31 @@ let Turn = (playerMove, pcMove) => {
             switch(pcType) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's super effective!</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's not very effective...</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pokeData.pokeName}</div> 
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePokeData.pokeName}</div> 
                     `;
                     break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
               }
         }
@@ -1260,34 +1342,34 @@ let Turn = (playerMove, pcMove) => {
             switch(pcType) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's super effective!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's not very effective...</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pokeData.pokeName}</div> 
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePokeData.pokeName}</div> 
                     `;
                     break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
               }
         }
         
-        pokeData.health -= pcDamage;
-        hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        activePokeData.health -= pcDamage;
+        hpbox.innerHTML = `HP ${activePokeData.health}/${activePokeData.Final_HP}`;
         updateInfoBox();
         winnerCheck();
 
@@ -1295,6 +1377,8 @@ let Turn = (playerMove, pcMove) => {
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
+        activePcPokeData.pchealthPerc -=damageperc;
+        activePcPokeData.pchealth -= damage;
         updatePcInfoBox();
 
         if (critical == 1.5)
@@ -1302,31 +1386,31 @@ let Turn = (playerMove, pcMove) => {
             switch(type) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's super effective!</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's not very effective...</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div> 
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div> 
                     `;
                     break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
               }
         }
@@ -1335,28 +1419,28 @@ let Turn = (playerMove, pcMove) => {
             switch(type) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's super effective!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's not very effective...</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div> 
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div> 
                     `;
                     break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
               }
         }
@@ -1369,6 +1453,8 @@ let Turn = (playerMove, pcMove) => {
         pcPokeHealthPerc.innerHTML = `
         ${pcPokeHealth.value}%
         `;
+        activePcPokeData.pchealthPerc -=damageperc;
+        activePcPokeData.pchealth -=damage;
         updatePcInfoBox();
 
         if (critical == 1.5)
@@ -1376,31 +1462,31 @@ let Turn = (playerMove, pcMove) => {
             switch(type) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's super effective!</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's not very effective...</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                     break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div>
                     `;
                     break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>A critical hit!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
               }
         }
@@ -1409,28 +1495,28 @@ let Turn = (playerMove, pcMove) => {
             switch(type) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's super effective!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;  
                   break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
                     <div>It's not very effective...</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
                   break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div>
                     `;
                   break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pokeData.pokeName} used <b>${playerMove.name}</b>!</div>
-                    <div>(${pcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
+                    <div>${activePokeData.pokeName} used <b>${playerMove.name}</b>!</div>
+                    <div>(${activePcPokeData.pcPokeName} lost ${damageperc}% of its Hp)</div>
                     `;
               }
             
@@ -1442,6 +1528,8 @@ let Turn = (playerMove, pcMove) => {
         pokeHealthPerc.innerHTML = `
         ${pokeHealth.value}%
         `;
+        activePokeData.healthPerc -=pcDamageperc;
+        activePokeData.health -=pcDamage;
         updateInfoBox();
 
         if (criticalPc == 1.5)
@@ -1449,31 +1537,31 @@ let Turn = (playerMove, pcMove) => {
             switch(pcType) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's super effective!</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                   break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's not very effective...</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                   break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div>
                     `;
                   break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>A critical hit!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
               }
             
@@ -1483,39 +1571,38 @@ let Turn = (playerMove, pcMove) => {
             switch(pcType) {
                 case 2:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's super effective!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                   break;
                 case 0.5:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
                     <div>It's not very effective...</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
                   break;
                 case 0:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>It doesn't affect opposing ${pcPokeData.pcPokeName}</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>It doesn't affect opposing ${activePcPokeData.pcPokeName}</div>
                     `;
                   break;
                 default:
                     battleLog.innerHTML = battleLog.innerHTML + `
-                    <div>${pcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
-                    <div>(${pokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
+                    <div>${activePcPokeData.pcPokeName} used <b>${pcMove.name}</b>!</div>
+                    <div>(${activePokeData.pokeName} lost ${pcDamageperc}% of its Hp)</div>
                     `;
               }
         }
         
-        pokeData.health -= pcDamage;
-        hpbox.innerHTML = `HP ${pokeData.health}/${pokeData.Final_HP}`;
+        hpbox.innerHTML = `HP ${activePokeData.health}/${activePokeData.Final_HP}`;
         updateInfoBox();
         winnerCheck();
     }
     
-    unblockActionField(pokeData);
+    GenerateActionField(activePokeData);
     turn_counter++;
     updateTurn();
 };
@@ -1525,65 +1612,68 @@ let Attack = (n) => {
     let randomPcMove;
     if (m==1)
     {
-        randomPcMove = pcMove1;
+        randomPcMove = activePcPokeData.pcMove1;
+
     }
     else if(m==2)
     {
-        randomPcMove = pcMove2;
+        randomPcMove = activePcPokeData.pcMove2;
     }
     else if(m==3)
     {
-        randomPcMove = pcMove3;
+        randomPcMove = activePcPokeData.pcMove3;
     }
     else if(m==4)
     {
-        randomPcMove = pcMove4;
+        randomPcMove = activePcPokeData.pcMove4;
     }
+    console.log(randomPcMove);
 
     if (n==1)
     {
         blockActionField();
-        Turn(move1, randomPcMove);
+        attackTurn(activePokeData.Move1, randomPcMove);
     }
     else if (n==2) {
         blockActionField();
-        Turn(move2, randomPcMove);
+        attackTurn(activePokeData.Move2, randomPcMove);
     } 
     else if (n==3) {
         blockActionField();
-        Turn(move3, randomPcMove);
+        attackTurn(activePokeData.Move3, randomPcMove);
     }
     else if (n==4) {
         blockActionField();
-        Turn(move4, randomPcMove);
+        attackTurn(activePokeData.Move4, randomPcMove);
     }
 };
 
-let loadPokemons = () => {
-    const url = "https://pokeapi.co/api/v2/pokemon/";
-
-    // for non animated images 905 pokemons are available
-    // let id = Math.floor(Math.random() * 905) + 1;
-    // for animated images only 649 pokemons are available
-    let id = Math.floor(Math.random() * 890) + 1;
-    const finalUrl = url + id;
-    fetch(finalUrl)
-    .then((Response) => Response.json())
-    .then((data) => {
-        goPokemonPlayer(data);
-    });
-    
-    // for non animated images 905 pokemons are available
-    // let idPc = Math.floor(Math.random() * 905) + 1;
-    // for animated images only 649 pokemons are available
-    let idPc = Math.floor(Math.random() * 890) + 1;
-    const finalUrlPc = url + idPc;
-    fetch(finalUrlPc)
-    .then((Response) => Response.json())
-    .then((data1) => {
-        goPokemonPc(data1);
-    });
+let blockActionField = () => {
+    document.getElementById("actionField").innerHTML=`
+    <p>Waiting for next turn...</p>
+    `;
 };
 
-//link for backgrounds images
-// https://play.pokemonshowdown.com/sprites/gen6bgs/
+let reload = () => {
+    screen.innerHTML = `
+    <div class="container" id="container">
+        <div class="back"><button id="start-btn">Battle!<p class="white">Play with pc</p></button></div>
+    </div>
+    `;
+    btn = document.getElementById("start-btn");
+    btn.addEventListener("click", startGame);
+};
+
+let winnerCheck = () => {
+    if (pcPokeHealth.value == 0)
+    {
+        declareWinner("Pheonix",activePcPokeData.pcPokeName);
+    }
+    if (pokeHealth.value == 0)
+    {
+        declareWinner("PC",activePokeData.pokeName);
+    }
+};
+
+//to disable a button
+// document.getElementById("myBtn").disabled = true;
